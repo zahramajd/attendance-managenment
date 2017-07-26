@@ -1,0 +1,40 @@
+{
+  "name": "attendencemanagement",
+  "version": "1.0.0",
+  "description": "Nuxt.js project",
+  "author": "zahramajd <zahra.majdabadi95@gmail.com>",
+  "private": true,
+  "dependencies": {
+    "@nuxtjs/axios": "^3.0.1",
+    "@nuxtjs/bootstrap-vue": "^1.1.0",
+    "@nuxtjs/proxy": "^1.1.1",
+    "@nuxtjs/pwa": "^0.2.0",
+    "body-parser": "^1.17.2",
+    "config": "^1.26.1",
+    "express": "^4.15.3",
+    "mongoose": "^4.11.4",
+    "node-sass": "^4.5.3",
+    "nodemon": "^1.11.0",
+    "nuxt": "latest",
+    "otplib": "^4.0.6",
+    "sass-loader": "^6.0.6"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "api-dev": "nodemon api/app.js",
+    "precommit": "npm run lint"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.15.0",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-html": "^2.0.0",
+    "eslint-plugin-promise": "^3.4.1",
+    "eslint-plugin-standard": "^2.0.1"
+  }
+}
