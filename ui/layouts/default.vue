@@ -8,9 +8,10 @@
   
       <b-nav is-nav-bar>
         <b-nav-item to="/">Home</b-nav-item>
+        <b-nav-item to="/users">Users</b-nav-item>
         <b-nav-item to="/">Rooms</b-nav-item>
         <b-nav-item to="/">Sessions</b-nav-item>
-        <b-nav-item to="/">Devices</b-nav-item>
+        <b-nav-item to="/devices">Devices</b-nav-item>
         <b-nav-item to="/">Clients</b-nav-item>
         <b-nav-item to="/">Log</b-nav-item>
       </b-nav>
