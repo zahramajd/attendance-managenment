@@ -1,6 +1,20 @@
 <template>
     <div>
-        <!-- Pets: {{ pets.map(p => p.name) }} -->
+    
+        <b-table striped hover :items="users" :fields="fields">
+            <template slot="first name" scope="item">
+                {{item.first_name}}
+            </template>
+            <template slot="last name" scope="item">
+                {{item.last_name}}
+            </template>
+            <template slot="user name " scope="item">
+                {{item.username}}
+            </template>
+            <template slot="actions" scope="item">
+                <b-btn size="sm" @click="editUser(item.item)">edit</b-btn>
+            </template>
+        </b-table>
     
         <div class="col-lg-6">
             <br>
@@ -26,15 +40,30 @@ export default {
         return {
             first_name: '',
             last_name: '',
-            username: ''
+            username: '',
+            users: [],
+            fields: {
+                first_name: {
+                    label: 'first name',
+                },
+                last_name: {
+                    label: 'last name',
+                },
+                username: {
+                    label: 'user name ',
+                },
+                actions: {
+                    label: 'detail'
+                }
+            },
         }
     },
-    mounted() {
-        this.getPets()
+    async mounted() {
+        await this.getUsers()
     },
     methods: {
-        async getPets() {
-            this.pets = (await this.$axios.get('pets')).data
+        async getUsers() {
+            this.users = (await this.$axios.get('users')).data
         },
         async newUser() {
             await this.$axios.post('new_user', {
@@ -43,6 +72,9 @@ export default {
                 username: this.username
             })
         },
+        editUser(item) {
+            alert(JSON.stringify(item));
+        }
     }
 }
 </script>

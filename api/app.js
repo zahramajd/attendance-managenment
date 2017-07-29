@@ -48,6 +48,13 @@ app.post('/api/new_user', async(req, res) => {
   res.end('new user has been added')
 
 })
+// --------------------------------
+// /api/users : List all users
+// --------------------------------
+app.get('/api/users', async(req, res) => {
+  let users = await User.find({})
+  res.json(users)
+})
 
 app.get('/api/pets', async(req, res) => {
   let cats = await Device.find({})

@@ -22,18 +22,11 @@ export default {
         return {
             devices: [],
             device_name: '',
-            fields: {
-                name: {
-                    label: 'Device',
-                }
-            },
         }
     },
-
     async mounted() {
         await this.getDevices()
     },
-
     methods: {
         async getDevices() {
             this.devices = (await this.$axios.get('devices')).data
@@ -44,7 +37,6 @@ export default {
             })
             //   await this.getPets()
         },
-
     }
 }
 </script>
