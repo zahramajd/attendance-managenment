@@ -1,6 +1,8 @@
 <template>
   <section class="container">
     <div>
+      <h3> The current QR code is </h3>
+      <br>
       <img :src="qrImageSrc">
       <br> {{ token }}
     </div>

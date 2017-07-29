@@ -10,7 +10,7 @@ export default {
   mutations: {
     UPDATE(state) {
       state.token = totpToken(state.secret, {
-        step: 1
+        step: 30
       })
     }
   }
