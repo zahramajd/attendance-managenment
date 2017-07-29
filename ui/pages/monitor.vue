@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div>
-      <img :src="qrImageSrc" @click="counter++">
+      <img :src="qrImageSrc">
       <br> {{ token }}
     </div>
   </section>
@@ -11,11 +11,10 @@
 import { mapState } from 'vuex'
 
 export default {
-  layout: 'device',
+  layout: 'monitor',
   data() {
     return {
       qr: 'taban',
-      counter: 0
     }
   },
   mounted() {
@@ -26,7 +25,7 @@ export default {
       token: state => state.otp.token
     }),
     qrImageSrc() {
-      return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.token}`
+      return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.token}&bgcolor=E9E8E9`
     },
   }
 }

@@ -5,13 +5,6 @@ mongoose.connect('mongodb://localhost/test', {
   useMongoClient: true,
 });
 
-// --------------------------------
-// Cat model
-// --------------------------------
-const Cat = mongoose.model('Cat', {
-  name: String
-});
-
 const Device = mongoose.model('Device', {
   name: String
 });

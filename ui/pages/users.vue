@@ -12,9 +12,14 @@
                 {{item.username}}
             </template>
             <template slot="actions" scope="item">
-                <b-btn size="sm" @click="editUser(item.item)">edit</b-btn>
+                <b-btn size="sm" v-b-modal.editModal>edit</b-btn>
             </template>
         </b-table>
+    
+        <b-modal id="editModal" title="Edit the user">
+            hi
+    
+        </b-modal>
     
         <div class="col-lg-6">
             <br>
@@ -71,6 +76,7 @@ export default {
                 last_name: this.last_name,
                 username: this.username
             })
+            await this.getUsers()
         },
         editUser(item) {
             alert(JSON.stringify(item));

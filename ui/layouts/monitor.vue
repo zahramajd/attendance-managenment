@@ -9,6 +9,6 @@
 <style>
 html,
 #app {
-    background: greenyellow
+    background: rgb(233, 232, 233)
 }
 </style>

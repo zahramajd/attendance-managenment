@@ -56,7 +56,10 @@ app.get('/api/users', async(req, res) => {
   res.json(users)
 })
 
-app.get('/api/pets', async(req, res) => {
-  let cats = await Device.find({})
-  res.json(cats)
+// --------------------------------
+// /api/editusers : edit users
+// --------------------------------
+app.get('/api/editusers', async(req, res) => {
+  let users = await User.find({})
+  res.json(users)
 })
