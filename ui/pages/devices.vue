@@ -1,6 +1,10 @@
 <template>
     <div>
-        <!-- Pets: {{ pets.map(p => p.name) }} -->
+        <div class="row">
+            <div class="col-4" v-for="d in devices" :key=" d._id ">
+                <b-card class="mycard m-1">{{d.name}}</b-card>
+            </div>
+        </div>
     
         <div class="col-lg-6">
             <br>
@@ -16,15 +20,23 @@
 export default {
     data() {
         return {
+            devices: [],
             device_name: '',
+            fields: {
+                name: {
+                    label: 'Device',
+                }
+            },
         }
     },
-    mounted() {
-        this.getPets()
+
+    async mounted() {
+        await this.getDevices()
     },
+
     methods: {
-        async getPets() {
-            this.pets = (await this.$axios.get('pets')).data
+        async getDevices() {
+            this.devices = (await this.$axios.get('devices')).data
         },
         async newDev() {
             await this.$axios.post('new_dev', {

@@ -27,6 +27,14 @@ app.post('/api/new_dev', async(req, res) => {
 })
 
 // --------------------------------
+// /api/devices : List all devices
+// --------------------------------
+app.get('/api/devices', async(req, res) => {
+  let devices = await Device.find({})
+  res.json(devices)
+})
+
+// --------------------------------
 // /api/new_user : Creates new User
 // --------------------------------
 app.post('/api/new_user', async(req, res) => {
