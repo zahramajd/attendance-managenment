@@ -59,7 +59,20 @@ app.get('/api/users', async(req, res) => {
 // --------------------------------
 // /api/editusers : edit users
 // --------------------------------
+// TODO: 
 app.get('/api/editusers', async(req, res) => {
   let users = await User.find({})
   res.json(users)
+})
+
+// --------------------------------
+// /api/verifyotp : verify OTP
+// --------------------------------
+app.post('/api/verifyotp', async(req, res) => {
+
+  let username = req.body.username;
+  let otp = req.body.otp;
+
+  console.log(username);
+
 })

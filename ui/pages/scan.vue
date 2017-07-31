@@ -27,7 +27,7 @@ export default {
 
     methods: {
         async sendOTP() {
-            await this.$axios.post('verifyOTP', {
+            await this.$axios.post('verifyotp', {
                 otp: this.otp,
                 username: this.username
             })
