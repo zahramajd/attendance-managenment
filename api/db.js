@@ -29,8 +29,17 @@ const Session = mongoose.model('Session', {
   rooms: [Schema.Types.ObjectId]
 });
 
+const Log = mongoose.model('Log', {
+  type: String,
+  device_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Device'
+  },
+})
+
 module.exports = {
   Device,
   User,
-  Session
+  Session,
+  Log
 }

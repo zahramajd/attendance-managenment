@@ -4,7 +4,8 @@ const bodyParser = require('body-parser')
 const {
   Device,
   User,
-  Session
+  Session,
+  Log
 } = require('./db')
 
 
@@ -72,6 +73,7 @@ app.get('/api/users/edit', async(req, res) => {
 // /api/verifyotp : verify OTP
 // --------------------------------
 app.post('/api/otp/verify', async(req, res) => {
+
   const {
     username,
     otp
@@ -86,7 +88,16 @@ app.post('/api/otp/verify', async(req, res) => {
     })
   }
 
-  // TODO: LOGGGGG
+  console.log(device._id)
+
+
+  var log = new Log({
+    type: 'verify',
+    device_id: device._id
+  });
+
+  await log.save()
+
 
   return res.json({
     device
