@@ -32,7 +32,7 @@ export default {
             this.devices = (await this.$axios.get('devices')).data
         },
         async newDev() {
-            await this.$axios.post('new_dev', {
+            await this.$axios.post('devices/new', {
                 name: this.device_name
             })
             await this.getDevices()

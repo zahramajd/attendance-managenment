@@ -71,7 +71,7 @@ export default {
             this.users = (await this.$axios.get('users')).data
         },
         async newUser() {
-            await this.$axios.post('new_user', {
+            await this.$axios.post('users/new', {
                 first_name: this.first_name,
                 last_name: this.last_name,
                 username: this.username

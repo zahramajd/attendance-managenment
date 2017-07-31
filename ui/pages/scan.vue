@@ -11,7 +11,9 @@
             <b-form-input v-model="username" type="text" placeholder="Enter the username"></b-form-input>
             <br>
     
-            <b-btn @click="sendOTP">Send</b-btn>
+            <b-btn @click="verifyOTP">Send</b-btn>
+            <br>
+            <pre dir="ltr">{{JSON.stringify(device, undefined, 4)}}</pre>
         </div>
     </div>
 </template>
@@ -21,17 +23,20 @@ export default {
     data() {
         return {
             otp: '',
-            username: ''
+            username: '',
+            device: {},
         }
     },
 
     methods: {
-        async sendOTP() {
-            await this.$axios.post('verifyotp', {
+        async verifyOTP() {
+            const res = await this.$axios.post('otp/verify', {
                 otp: this.otp,
                 username: this.username
             })
 
+            this.device = res.data.device
+            console.log(this.device)
         }
     }
 }

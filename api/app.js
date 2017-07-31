@@ -1,3 +1,4 @@
+const otplib = require('otplib').default
 const express = require('express')
 const bodyParser = require('body-parser')
 const {
@@ -5,6 +6,7 @@ const {
   User,
   Session
 } = require('./db')
+
 
 const app = module.exports = express()
 
@@ -16,9 +18,10 @@ console.log('API Server listening on 4000')
 // --------------------------------
 // /api/new_dev : Creates new Device
 // --------------------------------
-app.post('/api/new_dev', async(req, res) => {
+app.post('/api/devices/new', async(req, res) => {
   var dev = new Device({
-    name: req.body.name
+    name: req.body.name,
+    secret: 'GFJXE6STPBNFKS2EJBXESMLPN52FI4LC'
   });
 
   await dev.save()
@@ -37,7 +40,7 @@ app.get('/api/devices', async(req, res) => {
 // --------------------------------
 // /api/new_user : Creates new User
 // --------------------------------
-app.post('/api/new_user', async(req, res) => {
+app.post('/api/users/new', async(req, res) => {
   var user = new User({
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -58,9 +61,9 @@ app.get('/api/users', async(req, res) => {
 
 // --------------------------------
 // /api/editusers : edit users
-// --------------------------------
-// TODO: 
-app.get('/api/editusers', async(req, res) => {
+// TODO:
+// -------------------------------- 
+app.get('/api/users/edit', async(req, res) => {
   let users = await User.find({})
   res.json(users)
 })
@@ -68,11 +71,24 @@ app.get('/api/editusers', async(req, res) => {
 // --------------------------------
 // /api/verifyotp : verify OTP
 // --------------------------------
-app.post('/api/verifyotp', async(req, res) => {
+app.post('/api/otp/verify', async(req, res) => {
+  const {
+    username,
+    otp
+  } = req.body;
 
-  let username = req.body.username;
-  let otp = req.body.otp;
+  let devices = await Device.find({})
+  let device = devices.find(d => d.otp === otp)
 
-  console.log(username);
+  if (!device) {
+    return res.json({
+      error: 'Invalid Code! (device not found)'
+    })
+  }
 
+  // TODO: LOGGGGG
+
+  return res.json({
+    device
+  })
 })

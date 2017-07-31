@@ -1,13 +1,22 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const totpToken = require('otplib/core/totpToken').default
 
 mongoose.Promise = Promise
 mongoose.connect('mongodb://localhost/test', {
   useMongoClient: true,
 });
 
-const Device = mongoose.model('Device', {
-  name: String
-});
+const _Device = new Schema({
+  name: String,
+  secret: String
+})
+
+_Device.virtual('otp').get(function () {
+  return totpToken(this.secret)
+})
+
+const Device = mongoose.model('Device', _Device);
 
 const User = mongoose.model('User', {
   first_name: String,
@@ -16,8 +25,8 @@ const User = mongoose.model('User', {
 });
 
 const Session = mongoose.model('Session', {
-  attendees: [String],
-  rooms: [String]
+  attendees: [Schema.Types.ObjectId],
+  rooms: [Schema.Types.ObjectId]
 });
 
 module.exports = {
