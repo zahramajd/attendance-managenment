@@ -103,3 +103,11 @@ app.post('/api/otp/verify', async(req, res) => {
     device
   })
 })
+
+// --------------------------------
+// /api/logs : List all logs
+// --------------------------------
+app.get('/api/logs', async(req, res) => {
+  let logs = await Log.find({})
+  res.json(logs)
+})
