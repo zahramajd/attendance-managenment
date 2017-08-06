@@ -21,7 +21,11 @@ const Device = mongoose.model('Device', _Device);
 const User = mongoose.model('User', {
   first_name: String,
   last_name: String,
-  username: String
+  username: String,
+  managerOf: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Session'
+  }]
 });
 
 const Session = mongoose.model('Session', {
@@ -31,7 +35,7 @@ const Session = mongoose.model('Session', {
     type: Schema.Types.ObjectId,
     ref: 'Device'
   }],
-  managers: [{
+  attendees: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
@@ -52,6 +56,10 @@ const Log = mongoose.model('Log', {
   session: {
     type: Schema.Types.ObjectId,
     ref: 'Session'
+  },
+  userID: {
+    type: Schema.Types.ObjectId,
+    ref: User
   }
 })
 

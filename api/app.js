@@ -8,7 +8,6 @@ const {
   Log
 } = require('./db')
 
-
 const app = module.exports = express()
 
 app.use(bodyParser.json())
@@ -64,7 +63,7 @@ app.get('/api/users', async(req, res) => {
 
 // --------------------------------
 // /api/editusers : edit users
-// TODO: edit user
+// TODO: edit user and add managerOf field
 // -------------------------------- 
 app.get('/api/users/edit', async(req, res) => {
   let users = await User.find({})
@@ -74,6 +73,7 @@ app.get('/api/users/edit', async(req, res) => {
 // --------------------------------
 // /api/verifyotp : verify OTP
 // --------------------------------
+// TODO: check if the username exist in session
 app.post('/api/otp/verify', async(req, res) => {
 
   const {
@@ -90,8 +90,15 @@ app.post('/api/otp/verify', async(req, res) => {
     })
   }
 
+  // Find the UserID
+  async function getUserID(username) {
+
+    return await User.findOne({
+      username: username
+    })
+  }
   // Find the session
-  async function getSession(date, deviceId) {
+  async function getSession(date, deviceId, userID) {
 
     date = new Date(date)
     day = date.getDay()
@@ -111,25 +118,32 @@ app.post('/api/otp/verify', async(req, res) => {
           },
         }
       },
-      devices: deviceId
+      devices: deviceId,
+      attendees: {
+        $elemMatch: {
+          $eq: userID
+        }
+      }
     })
 
     console.log(session)
     return session
   }
 
-  let session = await getSession(Date.now(), device._id)
+  let userID = await getUserID(username)
+  console.log(userID)
+  let session = await getSession(Date.now(), device._id, userID._id)
   console.log(session)
 
 
   var log = new Log({
     type: 'check in',
     device_id: device._id,
-    session: session
+    session: session,
+    userID: userID
   });
 
   await log.save()
-
 
   return res.json({
     device
