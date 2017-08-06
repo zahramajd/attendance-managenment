@@ -10,7 +10,7 @@
         <b-nav-item to="/">Home</b-nav-item>
         <b-nav-item to="/users">Users</b-nav-item>
         <b-nav-item to="/">Rooms</b-nav-item>
-        <b-nav-item to="/">Sessions</b-nav-item>
+        <b-nav-item to="/sessions">Sessions</b-nav-item>
         <b-nav-item to="/devices">Devices</b-nav-item>
         <b-nav-item to="/">Clients</b-nav-item>
         <b-nav-item to="/logs">Log</b-nav-item>

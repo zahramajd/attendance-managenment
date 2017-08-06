@@ -2,7 +2,7 @@
     <div>
     
         <b-table striped hover :items="logs" :fields="fields">
-            <template slot="types" scope="item">
+            <template slot="action type" scope="item">
                 {{item.type}}
             </template>
             <template slot="device id" scope="item">
@@ -22,7 +22,7 @@ export default {
             logs: [],
             fields: {
                 type: {
-                    label: 'types',
+                    label: 'action type',
                 },
                 device_id: {
                     label: 'device id',

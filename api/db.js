@@ -25,8 +25,22 @@ const User = mongoose.model('User', {
 });
 
 const Session = mongoose.model('Session', {
-  attendees: [Schema.Types.ObjectId],
-  rooms: [Schema.Types.ObjectId]
+
+  name: String,
+  devices: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Device'
+  }],
+  managers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  times: [{
+    from: Number,
+    to: Number,
+    day: Number
+  }]
+
 });
 
 const Log = mongoose.model('Log', {
@@ -35,6 +49,10 @@ const Log = mongoose.model('Log', {
     type: Schema.Types.ObjectId,
     ref: 'Device'
   },
+  session: {
+    type: Schema.Types.ObjectId,
+    ref: 'Session'
+  }
 })
 
 module.exports = {

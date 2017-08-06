@@ -19,6 +19,8 @@ console.log('API Server listening on 4000')
 // --------------------------------
 // /api/new_dev : Creates new Device
 // --------------------------------
+
+//TODO: make random secret
 app.post('/api/devices/new', async(req, res) => {
   var dev = new Device({
     name: req.body.name,
@@ -62,7 +64,7 @@ app.get('/api/users', async(req, res) => {
 
 // --------------------------------
 // /api/editusers : edit users
-// TODO:
+// TODO: edit user
 // -------------------------------- 
 app.get('/api/users/edit', async(req, res) => {
   let users = await User.find({})
@@ -88,12 +90,42 @@ app.post('/api/otp/verify', async(req, res) => {
     })
   }
 
-  console.log(device._id)
+  // Find the session
+  async function getSession(date, deviceId) {
+
+    date = new Date(date)
+    day = date.getDay()
+    hour = date.getHours()
+
+    console.log(day, hour)
+
+    let session = await Session.findOne({
+      times: {
+        $elemMatch: {
+          day: day,
+          from: {
+            $lt: hour
+          },
+          to: {
+            $gt: hour
+          },
+        }
+      },
+      devices: deviceId
+    })
+
+    console.log(session)
+    return session
+  }
+
+  let session = await getSession(Date.now(), device._id)
+  console.log(session)
 
 
   var log = new Log({
-    type: 'verify',
-    device_id: device._id
+    type: 'check in',
+    device_id: device._id,
+    session: session
   });
 
   await log.save()
