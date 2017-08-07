@@ -6,7 +6,13 @@
                 {{item.type}}
             </template>
             <template slot="device id" scope="item">
-                {{item.device_id}}
+                {{item.device}}
+            </template>
+            <template slot="session id" scope="item">
+                {{item.session}}
+            </template>
+            <template slot="user id" scope="item">
+                {{item.user}}
             </template>
         </b-table>
     
@@ -24,8 +30,14 @@ export default {
                 type: {
                     label: 'action type',
                 },
-                device_id: {
+                device: {
                     label: 'device id',
+                },
+                session: {
+                    label: 'session id'
+                },
+                user: {
+                    label: 'user id'
                 }
             },
 

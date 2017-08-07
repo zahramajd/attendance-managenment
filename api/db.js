@@ -49,7 +49,7 @@ const Session = mongoose.model('Session', {
 
 const Log = mongoose.model('Log', {
   type: String,
-  device_id: {
+  device: {
     type: Schema.Types.ObjectId,
     ref: 'Device'
   },
@@ -57,9 +57,9 @@ const Log = mongoose.model('Log', {
     type: Schema.Types.ObjectId,
     ref: 'Session'
   },
-  userID: {
+  user: {
     type: Schema.Types.ObjectId,
-    ref: User
+    ref: 'User'
   }
 })
 

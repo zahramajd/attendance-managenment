@@ -73,7 +73,6 @@ app.get('/api/users/edit', async(req, res) => {
 // --------------------------------
 // /api/verifyotp : verify OTP
 // --------------------------------
-// TODO: check if the username exist in session
 app.post('/api/otp/verify', async(req, res) => {
 
   const {
@@ -119,11 +118,7 @@ app.post('/api/otp/verify', async(req, res) => {
         }
       },
       devices: deviceId,
-      attendees: {
-        $elemMatch: {
-          $eq: userID
-        }
-      }
+      attendees: userID
     })
 
     console.log(session)
@@ -137,10 +132,10 @@ app.post('/api/otp/verify', async(req, res) => {
 
 
   var log = new Log({
-    type: 'check in',
-    device_id: device._id,
+    type: 'CHECK_IN',
+    device: device,
     session: session,
-    userID: userID
+    user: userID
   });
 
   await log.save()
