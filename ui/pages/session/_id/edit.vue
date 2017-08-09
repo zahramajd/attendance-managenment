@@ -22,7 +22,7 @@
         <b-modal id="modal-time" title="add new time" @ok="submit_time">
     
             <form @submit.stop.prevent="submit">
-                <b-form-select placeholder="day" v-model="add_day" :options="options"></b-form-select>
+                <b-form-select placeholder="day" v-model="add_day" :options="options_week"></b-form-select>
                 <br>
                 <br>
                 <b-form-input type="number" placeholder="from" v-model="add_from"></b-form-input>
@@ -44,9 +44,16 @@
                 {{item.username}}
             </template>
         </b-table>
-        <b-button href="">
+        <b-button v-b-modal.modal-attendees>
             add new attendee
         </b-button>
+        <b-modal id="modal-attendees" title="add new attendee" @ok="submit_attendee">
+    
+            <form @submit.stop.prevent="submit">
+                <b-form-select v-model="add_attendee" :options="options_users"></b-form-select>
+            </form>
+    
+        </b-modal>
         <br>
         <br>
         <b-table striped hover :items="session.devices" :fields="fields_devices">
@@ -70,7 +77,7 @@ export default {
             devices: '',
             daysOfWeek: ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
             add_day: 6,
-            options: [
+            options_week: [
                 {
                     text: 'شنبه',
                     value: '6'
@@ -101,7 +108,9 @@ export default {
                 },
             ],
             add_from: '',
-            add_to: ''
+            add_to: '',
+            options_users: [],
+            add_attendee: ''
         }
     },
     computed: {
@@ -135,6 +144,7 @@ export default {
     },
     async mounted() {
         await this.getSessionDetail()
+        await this.getUsers()
     },
     methods: {
         async getSessionDetail() {
@@ -148,7 +158,16 @@ export default {
                 to: this.add_to
             })
             await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
-        }
+        },
+        async submit_attendee() {
+
+        },
+        async getUsers() {
+            console.log("gfhgjk")
+            let users = (await this.$axios.get('users')).data
+            this.options_users.text = users.username
+            this.options_users.value = users.username
+        },
     }
 }
 </script>
