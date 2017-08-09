@@ -23,8 +23,6 @@
 export default {
     data() {
         return {
-            type: '',
-            device_id: '',
             logs: [],
             fields: {
                 type: {

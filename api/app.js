@@ -152,3 +152,31 @@ app.get('/api/logs', async(req, res) => {
   let logs = await Log.find({})
   res.json(logs)
 })
+
+// --------------------------------
+// /api/sessions/new : Creates new Session
+// --------------------------------
+app.post('/api/sessions/new', async(req, res) => {
+  var session = new Session({
+
+  });
+
+  await session.save()
+  res.end('new session has been added')
+
+})
+// --------------------------------
+// /api/sessions : List all sessions
+// --------------------------------
+app.get('/api/sessions', async(req, res) => {
+  let sessions = await Session.find({})
+  res.json(sessions)
+})
+
+// --------------------------------
+// /api/sessions/:sessionID/detail : get detail of session
+// --------------------------------
+app.get('/api/sessions/:sessionID/detail', async(req, res) => {
+  let session = await Session.findById(req.params.sessionID).populate('devices').populate('attendees')
+  res.json(session)
+})
