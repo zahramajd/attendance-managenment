@@ -72,7 +72,6 @@
 export default {
     data() {
         return {
-            session: '',
             attendees: '',
             devices: '',
             daysOfWeek: ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
@@ -142,16 +141,18 @@ export default {
             }
         })
     },
-    async mounted() {
-        await this.getSessionDetail()
-        await this.getUsers()
+    async asyncData({ app, route }) {
+        let session = (await app.$axios.get('sessions/' + route.params.id + '/detail')).data
+        let users = (await app.$axios.get('users')).data
+        // this.options_users.text = users.username
+        // this.options_users.value = users.username
+        return {
+          session,
+          users
+        }
     },
     methods: {
-        async getSessionDetail() {
-            this.session = (await this.$axios.get('sessions/' + this.$route.params.id + '/detail')).data
-        },
         async submit_time() {
-
             this.session.times.push({
                 day: this.add_day,
                 from: this.add_from,
@@ -161,13 +162,7 @@ export default {
         },
         async submit_attendee() {
 
-        },
-        async getUsers() {
-            console.log("gfhgjk")
-            let users = (await this.$axios.get('users')).data
-            this.options_users.text = users.username
-            this.options_users.value = users.username
-        },
+        }
     }
 }
 </script>
