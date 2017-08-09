@@ -158,7 +158,7 @@ app.get('/api/logs', async(req, res) => {
 // --------------------------------
 app.post('/api/sessions/new', async(req, res) => {
   var session = new Session({
-
+    name: req.body.name,
   });
 
   await session.save()

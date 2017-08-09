@@ -8,7 +8,13 @@
                 <b-btn size="sm" :href="'/session/' +  item.item._id + '/edit'">detail</b-btn>
             </template>
         </b-table>
+        <div class="col-lg-6">
+            <br>
+            <b-form-input v-model="name" type="text" placeholder="enter the session name"></b-form-input>
+            <br>
     
+            <b-btn @click="newSession">New Session</b-btn>
+        </div>
     </div>
 </template>
 
@@ -33,7 +39,13 @@ export default {
     methods: {
         async getSessions() {
             this.sessions = (await this.$axios.get('sessions')).data
-        }
+        },
+        async newSession() {
+            await this.$axios.post('sessions/new', {
+                name: this.name,
+            })
+            await this.getSessions()
+        },
     }
 }
 </script>
