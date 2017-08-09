@@ -180,3 +180,33 @@ app.get('/api/sessions/:sessionID/detail', async(req, res) => {
   let session = await Session.findById(req.params.sessionID).populate('devices').populate('attendees')
   res.json(session)
 })
+
+// ----------------------------------------------------------
+// /api/sessions/:sessionID/times/add : 
+// ----------------------------------------------------------
+app.post('/api/sessions/:sessionID/times/add', async(req, res) => {
+  console.log("11111")
+
+  Session.findByIdAndUpdate(
+    req.params.sessionID, {
+      $push: {
+        times: {
+          day: req.body.day,
+          from: req.body.from,
+          to: req.body.to
+        }
+      }
+    },
+  )
+})
+
+// /api/sessions/:sessionID/edit: edit session
+// ----------------------------------------------------------
+app.post('/api/sessions/:sessionID/edit', async(req, res) => {
+  let session = await Session.findById(req.params.sessionID)
+  session.attendees = req.body.attendees
+  session.devices = req.body.devices
+  session.times = req.body.times
+
+  await session.save()
+})

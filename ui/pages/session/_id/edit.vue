@@ -6,7 +6,7 @@
         <br>
         <b-table striped hover :items="session.times" :fields="fields_times">
             <template slot="day" scope="row">
-                {{getDayOfWeek(row.value)}}
+                {{daysOfWeek[row.value]}}
             </template>
             <template slot="from" scope="item">
                 {{item.value}}
@@ -15,6 +15,23 @@
                 {{item.value}}
             </template>
         </b-table>
+        <b-button v-b-modal.modal-time>
+            add new time
+        </b-button>
+    
+        <b-modal id="modal-time" title="add new time" @ok="submit_time">
+    
+            <form @submit.stop.prevent="submit">
+                <b-form-select placeholder="day" v-model="add_day" :options="options"></b-form-select>
+                <br>
+                <br>
+                <b-form-input type="number" placeholder="from" v-model="add_from"></b-form-input>
+                <br>
+                <b-form-input type="number" placeholder="to" v-model="add_to"></b-form-input>
+            </form>
+    
+        </b-modal>
+        <br>
         <br>
         <b-table striped hover :items="session.attendees" :fields="fields_attendees">
             <template slot="first name" scope="item">
@@ -27,19 +44,20 @@
                 {{item.username}}
             </template>
         </b-table>
+        <b-button href="">
+            add new attendee
+        </b-button>
         <br>
         <br>
         <b-table striped hover :items="session.devices" :fields="fields_devices">
             <template slot="device name" scope="item">
                 {{item.name}}
             </template>
-    
         </b-table>
-    
-        <br>
         <b-button href="">
-            update
+            add new device
         </b-button>
+    
     </div>
 </template>
 
@@ -49,7 +67,41 @@ export default {
         return {
             session: '',
             attendees: '',
-            devices: ''
+            devices: '',
+            daysOfWeek: ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
+            add_day: 6,
+            options: [
+                {
+                    text: 'شنبه',
+                    value: '6'
+                },
+                {
+                    text: 'یکشنبه',
+                    value: '0'
+                },
+                {
+                    text: 'دوشنبه',
+                    value: '1'
+                },
+                {
+                    text: 'سه شنبه',
+                    value: '2'
+                },
+                {
+                    text: 'چهارشنبه',
+                    value: '3'
+                },
+                {
+                    text: 'پنجشنبه',
+                    value: '4'
+                },
+                {
+                    text: 'جمعه',
+                    value: '5'
+                },
+            ],
+            add_from: '',
+            add_to: ''
         }
     },
     computed: {
@@ -85,28 +137,17 @@ export default {
         await this.getSessionDetail()
     },
     methods: {
-
         async getSessionDetail() {
             this.session = (await this.$axios.get('sessions/' + this.$route.params.id + '/detail')).data
         },
+        async submit_time() {
 
-        getDayOfWeek(num_day) {
-            if (num_day == 0)
-                return 'یکشنبه'
-            if (num_day == 1)
-                return 'دوشنبه'
-            if (num_day == 2)
-                return 'سه شنبه'
-            if (num_day == 3)
-                return 'چهارشنبه'
-            if (num_day == 4)
-                return 'پنجشنبه'
-            if (num_day == 5)
-                return 'جمعه'
-            if (num_day == 6)
-                return 'شنبه'
-
-            return num_day
+            this.session.times.push({
+                day: this.add_day,
+                from: this.add_from,
+                to: this.add_to
+            })
+            await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
         }
     }
 }
