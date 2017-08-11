@@ -151,7 +151,7 @@ export default {
 
             let options_users = []
             for (var el of this.all_users) {
-                options_users.push({ text: el.username, value: el.username })
+                options_users.push({ text: el.username, value: el._id })
             }
             return options_users
         },
@@ -187,6 +187,8 @@ export default {
             await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
         },
         async submit_attendee() {
+            this.session.attendees.push(this.add_attendee)
+            await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
 
         },
         async submit_device() { }
