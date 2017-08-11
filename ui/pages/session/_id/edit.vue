@@ -61,9 +61,16 @@
                 {{item.name}}
             </template>
         </b-table>
-        <b-button href="">
+        <b-button v-b-modal.modal-devices>
             add new device
         </b-button>
+        <b-modal id="modal-devices" title="add new device" @ok="submit_device">
+    
+            <form @submit.stop.prevent="submit">
+                <b-form-select v-model="add_device" :options="options_devices"></b-form-select>
+            </form>
+    
+        </b-modal>
     
     </div>
 </template>
@@ -108,8 +115,8 @@ export default {
             ],
             add_from: '',
             add_to: '',
-            // options_users: [],
-            add_attendee: ''
+            add_attendee: '',
+            add_device: ''
         }
     },
     computed: {
@@ -147,16 +154,27 @@ export default {
                 options_users.push({ text: el.username, value: el.username })
             }
             return options_users
+        },
+        options_devices: function () {
+
+            let options_devices = []
+            for (var el of this.all_devices) {
+                options_devices.push({ text: el.name, value: el.name })
+            }
+            return options_devices
         }
 
     },
     async asyncData({ app, route }) {
         let session = (await app.$axios.get('sessions/' + route.params.id + '/detail')).data
         let all_users = (await app.$axios.get('users')).data
+        let all_devices = (await app.$axios.get('devices')).data
+
 
         return {
             session,
-            all_users
+            all_users,
+            all_devices
         }
     },
     methods: {
@@ -170,7 +188,8 @@ export default {
         },
         async submit_attendee() {
 
-        }
+        },
+        async submit_device() { }
     }
 }
 </script>
