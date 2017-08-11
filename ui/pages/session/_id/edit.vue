@@ -159,7 +159,7 @@ export default {
 
             let options_devices = []
             for (var el of this.all_devices) {
-                options_devices.push({ text: el.name, value: el.name })
+                options_devices.push({ text: el.name, value: el._id })
             }
             return options_devices
         }
@@ -169,7 +169,6 @@ export default {
         let session = (await app.$axios.get('sessions/' + route.params.id + '/detail')).data
         let all_users = (await app.$axios.get('users')).data
         let all_devices = (await app.$axios.get('devices')).data
-
 
         return {
             session,
@@ -191,7 +190,10 @@ export default {
             await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
 
         },
-        async submit_device() { }
+        async submit_device() {
+            this.session.devices.push(this.add_device)
+            await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
+        }
     }
 }
 </script>
