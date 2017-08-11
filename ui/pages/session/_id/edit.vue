@@ -108,7 +108,7 @@ export default {
             ],
             add_from: '',
             add_to: '',
-            options_users: [],
+            // options_users: [],
             add_attendee: ''
         }
     },
@@ -139,16 +139,24 @@ export default {
             to: {
                 label: 'to'
             }
-        })
+        }),
+        options_users: function () {
+
+            let options_users = []
+            for (var el of this.all_users) {
+                options_users.push({ text: el.username, value: el.username })
+            }
+            return options_users
+        }
+
     },
     async asyncData({ app, route }) {
         let session = (await app.$axios.get('sessions/' + route.params.id + '/detail')).data
-        let users = (await app.$axios.get('users')).data
-        // this.options_users.text = users.username
-        // this.options_users.value = users.username
+        let all_users = (await app.$axios.get('users')).data
+
         return {
-          session,
-          users
+            session,
+            all_users
         }
     },
     methods: {
