@@ -20,7 +20,7 @@ console.log('API Server listening on 4000')
 // --------------------------------
 
 //TODO: make random secret
-app.post('/api/devices/new', async(req, res) => {
+app.post('/api/devices/new', async (req, res) => {
   var dev = new Device({
     name: req.body.name,
     secret: 'GFJXE6STPBNFKS2EJBXESMLPN52FI4LC'
@@ -34,7 +34,7 @@ app.post('/api/devices/new', async(req, res) => {
 // --------------------------------
 // /api/devices : List all devices
 // --------------------------------
-app.get('/api/devices', async(req, res) => {
+app.get('/api/devices', async (req, res) => {
   let devices = await Device.find({})
   res.json(devices)
 })
@@ -42,7 +42,7 @@ app.get('/api/devices', async(req, res) => {
 // --------------------------------
 // /api/new_user : Creates new User
 // --------------------------------
-app.post('/api/users/new', async(req, res) => {
+app.post('/api/users/new', async (req, res) => {
   var user = new User({
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -56,24 +56,27 @@ app.post('/api/users/new', async(req, res) => {
 // --------------------------------
 // /api/users : List all users
 // --------------------------------
-app.get('/api/users', async(req, res) => {
+app.get('/api/users', async (req, res) => {
   let users = await User.find({})
   res.json(users)
 })
 
 // --------------------------------
 // /api/editusers : edit users
-// TODO: edit user and add managerOf field
 // -------------------------------- 
-app.get('/api/users/edit', async(req, res) => {
-  let users = await User.find({})
-  res.json(users)
+app.post('/api/users/:userID/edit', async (req, res) => {
+
+  console.log("man")
+  let user = await User.findById(req.params.userID)
+  user.managerOf.push(req.body._id)
+
+  await user.save()
 })
 
 // --------------------------------
 // /api/verifyotp : verify OTP
 // --------------------------------
-app.post('/api/otp/verify', async(req, res) => {
+app.post('/api/otp/verify', async (req, res) => {
 
   const {
     username,
@@ -148,7 +151,7 @@ app.post('/api/otp/verify', async(req, res) => {
 // --------------------------------
 // /api/logs : List all logs
 // --------------------------------
-app.get('/api/logs', async(req, res) => {
+app.get('/api/logs', async (req, res) => {
   let logs = await Log.find({})
   res.json(logs)
 })
@@ -156,7 +159,7 @@ app.get('/api/logs', async(req, res) => {
 // --------------------------------
 // /api/sessions/new : Creates new Session
 // --------------------------------
-app.post('/api/sessions/new', async(req, res) => {
+app.post('/api/sessions/new', async (req, res) => {
   var session = new Session({
     name: req.body.name,
   });
@@ -168,7 +171,7 @@ app.post('/api/sessions/new', async(req, res) => {
 // --------------------------------
 // /api/sessions : List all sessions
 // --------------------------------
-app.get('/api/sessions', async(req, res) => {
+app.get('/api/sessions', async (req, res) => {
   let sessions = await Session.find({})
   res.json(sessions)
 })
@@ -176,7 +179,7 @@ app.get('/api/sessions', async(req, res) => {
 // --------------------------------
 // /api/sessions/:sessionID/detail : get detail of session
 // --------------------------------
-app.get('/api/sessions/:sessionID/detail', async(req, res) => {
+app.get('/api/sessions/:sessionID/detail', async (req, res) => {
   let session = await Session.findById(req.params.sessionID).populate('devices').populate('attendees')
   res.json(session)
 })
@@ -184,8 +187,7 @@ app.get('/api/sessions/:sessionID/detail', async(req, res) => {
 // ----------------------------------------------------------
 // /api/sessions/:sessionID/times/add : 
 // ----------------------------------------------------------
-app.post('/api/sessions/:sessionID/times/add', async(req, res) => {
-  console.log("11111")
+app.post('/api/sessions/:sessionID/times/add', async (req, res) => {
 
   Session.findByIdAndUpdate(
     req.params.sessionID, {
@@ -202,7 +204,7 @@ app.post('/api/sessions/:sessionID/times/add', async(req, res) => {
 
 // /api/sessions/:sessionID/edit: edit session
 // ----------------------------------------------------------
-app.post('/api/sessions/:sessionID/edit', async(req, res) => {
+app.post('/api/sessions/:sessionID/edit', async (req, res) => {
   let session = await Session.findById(req.params.sessionID)
   session.attendees = req.body.attendees
   session.devices = req.body.devices

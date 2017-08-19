@@ -18,9 +18,9 @@
         <b-button v-b-modal.modal-time>
             add new time
         </b-button>
-    
+
         <b-modal id="modal-time" title="add new time" @ok="submit_time">
-    
+
             <form @submit.stop.prevent="submit">
                 <b-form-select placeholder="day" v-model="add_day" :options="options_week"></b-form-select>
                 <br>
@@ -29,7 +29,7 @@
                 <br>
                 <b-form-input type="number" placeholder="to" v-model="add_to"></b-form-input>
             </form>
-    
+
         </b-modal>
         <br>
         <br>
@@ -48,11 +48,11 @@
             add new attendee
         </b-button>
         <b-modal id="modal-attendees" title="add new attendee" @ok="submit_attendee">
-    
+
             <form @submit.stop.prevent="submit">
                 <b-form-select v-model="add_attendee" :options="options_users"></b-form-select>
             </form>
-    
+
         </b-modal>
         <br>
         <br>
@@ -65,13 +65,36 @@
             add new device
         </b-button>
         <b-modal id="modal-devices" title="add new device" @ok="submit_device">
-    
+
             <form @submit.stop.prevent="submit">
                 <b-form-select v-model="add_device" :options="options_devices"></b-form-select>
             </form>
-    
+
         </b-modal>
-    
+        <br>
+        <br>
+        <!-- <b-table striped hover :items="" :fields="">
+                                    <template slot="first name" scope="item">
+                                        {{item.first_name}}
+                                    </template>
+                                    <template slot="last name" scope="item">
+                                        {{item.last_name}}
+                                    </template>
+                                    <template slot="user name" scope="item">
+                                        {{item.username}}
+                                    </template>
+                                </b-table> -->
+        <b-button v-b-modal.modal-manager>
+            add new manager
+        </b-button>
+        <b-modal id="modal-manager" title="add new manager" @ok="submit_manager">
+
+            <form @submit.stop.prevent="submit">
+                <b-form-select v-model="add_manager" :options="options_users"></b-form-select>
+            </form>
+
+        </b-modal>
+
     </div>
 </template>
 
@@ -116,7 +139,8 @@ export default {
             add_from: '',
             add_to: '',
             add_attendee: '',
-            add_device: ''
+            add_device: '',
+            add_manager: ''
         }
     },
     computed: {
@@ -193,6 +217,11 @@ export default {
         async submit_device() {
             this.session.devices.push(this.add_device)
             await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
+        },
+        async submit_manager() {
+            await console.log("manager")
+            await this.$axios.post('/users/' + this.add_manager + '/edit', this.session)
+
         }
     }
 }
