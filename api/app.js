@@ -212,3 +212,12 @@ app.post('/api/sessions/:sessionID/edit', async (req, res) => {
 
   await session.save()
 })
+
+
+// --------------------------------
+// /api/manager-of/:userID : get managerOf
+// --------------------------------
+app.get('/api/manager-of/:userID', async (req, res) => {
+  let user = await User.findById(req.params.userID).populate('managerOf')
+  res.json(user)
+})
