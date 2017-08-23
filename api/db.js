@@ -60,7 +60,8 @@ const Log = mongoose.model('Log', {
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  timestamps: { createdAt: { type: Date, default: Date.now } }
 })
 
 module.exports = {

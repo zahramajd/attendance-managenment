@@ -2,6 +2,11 @@ require('./api/start')
 
 module.exports = {
   srcDir: 'ui',
+  mode: 'spa',
+  loadingIndicator: {
+    // https://nuxtjs.org/api/configuration-loading-indicator
+    name: 'pulse'
+  },
   manifest: {
     name: 'Attendee'
   },

@@ -5,7 +5,7 @@
                 {{item.name}}
             </template>
             <template slot="actions" scope="item">
-                <b-btn size="sm" :href="'/session/' +  item.item._id + '/edit'">detail</b-btn>
+                <b-btn size="sm" :href="'/session/' +  item.item._id + '/view'">detail</b-btn>
             </template>
         </b-table>
 

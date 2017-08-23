@@ -156,9 +156,9 @@ app.get('/api/logs', async (req, res) => {
   res.json(logs)
 })
 
-// --------------------------------
+// ----------------------------------------
 // /api/sessions/new : Creates new Session
-// --------------------------------
+// ----------------------------------------
 app.post('/api/sessions/new', async (req, res) => {
   var session = new Session({
     name: req.body.name,
@@ -168,25 +168,25 @@ app.post('/api/sessions/new', async (req, res) => {
   res.end('new session has been added')
 
 })
-// --------------------------------
+// ----------------------------------
 // /api/sessions : List all sessions
-// --------------------------------
+// ----------------------------------
 app.get('/api/sessions', async (req, res) => {
   let sessions = await Session.find({})
   res.json(sessions)
 })
 
-// --------------------------------
+// --------------------------------------------------------
 // /api/sessions/:sessionID/detail : get detail of session
-// --------------------------------
+// --------------------------------------------------------
 app.get('/api/sessions/:sessionID/detail', async (req, res) => {
   let session = await Session.findById(req.params.sessionID).populate('devices').populate('attendees')
   res.json(session)
 })
 
-// ----------------------------------------------------------
-// /api/sessions/:sessionID/times/add : 
-// ----------------------------------------------------------
+// ---------------------------------------------------------------
+// /api/sessions/:sessionID/times/add : add new time to a session
+// ---------------------------------------------------------------
 app.post('/api/sessions/:sessionID/times/add', async (req, res) => {
 
   Session.findByIdAndUpdate(
@@ -202,8 +202,9 @@ app.post('/api/sessions/:sessionID/times/add', async (req, res) => {
   )
 })
 
+// --------------------------------------------
 // /api/sessions/:sessionID/edit: edit session
-// ----------------------------------------------------------
+// --------------------------------------------
 app.post('/api/sessions/:sessionID/edit', async (req, res) => {
   let session = await Session.findById(req.params.sessionID)
   session.attendees = req.body.attendees
@@ -214,10 +215,21 @@ app.post('/api/sessions/:sessionID/edit', async (req, res) => {
 })
 
 
-// --------------------------------
+// ----------------------------------------
 // /api/manager-of/:userID : get managerOf
-// --------------------------------
+// -----------------------------------------
 app.get('/api/manager-of/:userID', async (req, res) => {
   let user = await User.findById(req.params.userID).populate('managerOf')
   res.json(user)
+})
+
+// -----------------------------------------------------------------------
+// /api/logs/sessionID : List logs of a certain session at a certain time
+// -----------------------------------------------------------------------
+app.get('/api/logs/:sessionID', async (req, res) => {
+
+  let logs = await Log.find({
+    session: req.params.sessionID
+  }).populate('user')
+  res.json(logs)
 })
