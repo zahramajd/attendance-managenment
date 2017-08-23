@@ -39,7 +39,7 @@
         </b-table>
         <br>
         <br>
-        <b-table striped hover :items="logs" :fields="fields_logs">
+        <b-table striped hover :sort-desc.sync="sortDesc" :items="logs" :fields="fields_logs">
             <template slot="action type" scope="item">
                 {{item.type}}
             </template>
@@ -50,7 +50,7 @@
                 {{item.user}}
             </template>
             <template slot="time" scope="item">
-                {{item.time}}
+                {{new Date(item.timestamps).getDay()}}
             </template>
         </b-table>
 
@@ -64,7 +64,8 @@ export default {
             attendees: '',
             devices: '',
             daysOfWeek: ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
-            logs: []
+            logs: [],
+            sortDesc: false,
         }
     },
     computed: {
@@ -108,22 +109,27 @@ export default {
             },
             timestamps: {
                 label: 'time',
-                formatter: t => t.createdAt
+                formatter: t => t.createdAt,
+                sortable: true,
             }
-        })
+        }),
 
     },
     async asyncData({ app, route }) {
-        let session = (await app.$axios.get('sessions/' + route.params.id + '/detail')).data
-        let all_users = (await app.$axios.get('users')).data
-        let all_devices = (await app.$axios.get('devices')).data
-        let logs = (await app.$axios.get('logs/' + route.params.id)).data
+
+        let currentDate = new Date()
+
+        let session = await app.$axios.$get('sessions/' + route.params.id + '/detail')
+        let all_users = await app.$axios.$get('users')
+        let all_devices = await app.$axios.$get('devices')
+        let logs = await app.$axios.$get('logs/' + route.params.id + '/' + currentDate.toISOString())
 
         return {
             session,
             all_users,
             all_devices,
-            logs
+            logs,
+            currentDate
         }
     },
 }

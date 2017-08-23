@@ -1,6 +1,8 @@
 const otplib = require('otplib').default
 const express = require('express')
 const bodyParser = require('body-parser')
+const moment = require('moment')
+
 const {
   Device,
   User,
@@ -226,9 +228,16 @@ app.get('/api/manager-of/:userID', async (req, res) => {
 // -----------------------------------------------------------------------
 // /api/logs/sessionID : List logs of a certain session at a certain time
 // -----------------------------------------------------------------------
-app.get('/api/logs/:sessionID', async (req, res) => {
+app.get('/api/logs/:sessionID/:date', async (req, res) => {
+
+  let date = moment(new Date(req.params.date))
+
   let logs = await Log.find({
-    session: req.params.sessionID
+    session: req.params.sessionID,
+    'timestamps.createdAt': {
+      $gte: date.clone().startOf('day'),
+      $lt: date.clone().endOf('day')
+    }
   }).sort({ 'timestamps': 'desc' }).populate('user')
   res.json(logs)
 })
