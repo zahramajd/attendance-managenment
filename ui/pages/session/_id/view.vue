@@ -40,15 +40,18 @@
         <br>
         <br>
         <b-table striped hover :items="logs" :fields="fields_logs">
-            <!-- <template slot="action type" scope="item">
-                            {{item.type}}
-                        </template>
-                        <template slot="device id" scope="item">
-                            {{item.device}}
-                        </template>
-                        <template slot="username" scope="item">
-                            {{item.user}}
-                        </template> -->
+            <template slot="action type" scope="item">
+                {{item.type}}
+            </template>
+            <template slot="device id" scope="item">
+                {{item.device}}
+            </template>
+            <template slot="username" scope="item">
+                {{item.user}}
+            </template>
+            <template slot="time" scope="item">
+                {{item.time}}
+            </template>
         </b-table>
 
     </div>
@@ -102,6 +105,10 @@ export default {
             user: {
                 label: 'Username',
                 formatter: u => u.username
+            },
+            timestamps: {
+                label: 'time',
+                formatter: t => t.createdAt
             }
         })
 

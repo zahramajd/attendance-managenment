@@ -227,9 +227,8 @@ app.get('/api/manager-of/:userID', async (req, res) => {
 // /api/logs/sessionID : List logs of a certain session at a certain time
 // -----------------------------------------------------------------------
 app.get('/api/logs/:sessionID', async (req, res) => {
-
   let logs = await Log.find({
     session: req.params.sessionID
-  }).populate('user')
+  }).sort({ 'timestamps': 'desc' }).populate('user')
   res.json(logs)
 })
