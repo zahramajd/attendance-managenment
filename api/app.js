@@ -108,8 +108,6 @@ app.post('/api/otp/verify', async (req, res) => {
     day = date.getDay()
     hour = date.getHours()
 
-    console.log(day, hour)
-
     let session = await Session.findOne({
       times: {
         $elemMatch: {
@@ -126,28 +124,36 @@ app.post('/api/otp/verify', async (req, res) => {
       attendees: userID
     })
 
-    console.log(session)
     return session
   }
 
   let userID = await getUserID(username)
-  console.log(userID)
+  if (!userID) {
+    return res.json({
+      error: 'The user does not exist'
+    })
+  }
   let session = await getSession(Date.now(), device._id, userID._id)
-  console.log(session)
+  if (!session) {
+    return res.json({
+      error: 'The session is not now or the user is not in the list'
+    })
+  }
 
+  if (session && device && userID) {
+    var log = new Log({
+      type: 'CHECK_IN',
+      device: device,
+      session: session,
+      user: userID
+    });
 
-  var log = new Log({
-    type: 'CHECK_IN',
-    device: device,
-    session: session,
-    user: userID
-  });
+    await log.save()
 
-  await log.save()
-
-  return res.json({
-    device
-  })
+    return res.json({
+      device
+    })
+  }
 })
 
 // --------------------------------

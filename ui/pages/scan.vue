@@ -1,19 +1,20 @@
 <template>
     <div>
         <!-- Pets: {{ pets.map(p => p.name) }} -->
-    
+
         <div class="col-lg-6">
             <br>
             <b-form-input v-model="otp" type="text" placeholder="Enter the OTP"></b-form-input>
             <br>
-    
+
             <br>
             <b-form-input v-model="username" type="text" placeholder="Enter the username"></b-form-input>
             <br>
-    
+
             <b-btn @click="verifyOTP">Send</b-btn>
             <br>
             <pre dir="ltr">{{JSON.stringify(device, undefined, 4)}}</pre>
+            <p>{{err}}</p>
         </div>
     </div>
 </template>
@@ -25,6 +26,7 @@ export default {
             otp: '',
             username: '',
             device: {},
+            err: ''
         }
     },
 
@@ -36,7 +38,7 @@ export default {
             })
 
             this.device = res.data.device
-            console.log(this.device)
+            this.err = res.data.error
         }
     }
 }
