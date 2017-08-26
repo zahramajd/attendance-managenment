@@ -232,7 +232,7 @@ app.get('/api/manager-of/:userID', async (req, res) => {
 })
 
 // -----------------------------------------------------------------------
-// /api/logs/sessionID : List logs of a certain session at a certain time
+// /api/logs/sessionID/:date : List logs of a certain session at a certain time
 // -----------------------------------------------------------------------
 app.get('/api/logs/:sessionID/:date', async (req, res) => {
 
@@ -246,4 +246,32 @@ app.get('/api/logs/:sessionID/:date', async (req, res) => {
     }
   }).sort({ 'timestamps': 'desc' }).populate('user')
   res.json(logs)
+})
+
+// --------------------------------
+// /api/logs/new : Creates new Log
+// --------------------------------
+app.post('/api/logs/new', async (req, res) => {
+  var log = new Log({
+    type: 'manual',
+    session: req.body.session,
+    user: req.body.user,
+    //  addedBy: req.body.manager
+  });
+
+  await log.save()
+  res.end()
+})
+
+// --------------------------------
+// /api/logs/remove : Creates new Log
+// --------------------------------
+//TODO: 
+app.post('/api/logs/remove', async (req, res) => {
+  await Log.delete({
+    session: req.body.session,
+    user: req.body.user,
+  });
+
+  res.end()
 })
