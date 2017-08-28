@@ -20,12 +20,13 @@ console.log('API Server listening on 4000')
 // --------------------------------
 // /api/new_dev : Creates new Device
 // --------------------------------
-
-//TODO: make random secret
 app.post('/api/devices/new', async (req, res) => {
+
+  let secret = otplib.authenticator.generateSecret();
+
   var dev = new Device({
     name: req.body.name,
-    secret: 'GFJXE6STPBNFKS2EJBXESMLPN52FI4LC'
+    secret: secret
   });
 
   await dev.save()
