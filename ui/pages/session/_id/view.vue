@@ -34,7 +34,7 @@
                                 {{item.username}}
                             </template>
                             <template slot="actions" scope="h">
-                                <b-btn size="sm" variant="success" v-if="isPresent(h.item)">present, click to remove</b-btn>
+                                <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">present, click to remove</b-btn>
                                 <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">absent, click to add</b-btn>
                             </template>
                         </b-table>
@@ -166,31 +166,41 @@ export default {
         isPresent(user) {
             let _isPresent = false
             this.attended.forEach(function(currentUser) {
-                console.log(user._id)
                 if (currentUser._id + '' === user._id + '')
                     _isPresent = true
             })
-            console.log(_isPresent)
-
             return _isPresent
         },
         async presentAttendee(user) {
-            let res = await this.$axios.$post('logs/new', {
+            let res = await this.$axios.$post('logs/add', {
                 session: this.$route.params.id,
                 user: user._id,
             })
             this.load()
         },
         async removeAttendee(user) {
+
+            let logID = this.findLogID(user, this.$route.params.id)
+            console.log(logID)
             let res = await this.$axios.$post('logs/remove', {
                 session: this.$route.params.id,
                 user: user._id,
+                id: logID
             })
             this.load()
         },
         async load() {
             this.session = await this.$axios.$get('sessions/' + this.$route.params.id + '/detail')
             this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.currentDate.toISOString())
+        },
+        findLogID(user, sessionID) {
+            return this.logs.forEach(current_log => {
+                if ((current_log.user._id + '' === user._id + '') && (current_log.session + '' === sessionID + '')) {
+                    {
+                        return true
+                    }
+                }
+            })
         }
     },
 

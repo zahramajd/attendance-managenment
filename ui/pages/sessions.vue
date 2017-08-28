@@ -5,14 +5,14 @@
                 {{item.name}}
             </template>
             <template slot="actions" scope="item">
-                <b-btn size="sm" :href="'/session/' +  item.item._id + '/edit'">detail</b-btn>
+                <b-btn size="sm" :to="'/session/' +  item.item._id + '/edit'">detail</b-btn>
             </template>
         </b-table>
         <div class="col-lg-6">
             <br>
             <b-form-input v-model="name" type="text" placeholder="enter the session name"></b-form-input>
             <br>
-    
+
             <b-btn @click="newSession">New Session</b-btn>
         </div>
     </div>

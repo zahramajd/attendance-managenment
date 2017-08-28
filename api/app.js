@@ -251,9 +251,10 @@ app.get('/api/logs/:sessionID/:date', async (req, res) => {
 // --------------------------------
 // /api/logs/new : Creates new Log
 // --------------------------------
-app.post('/api/logs/new', async (req, res) => {
+//TODO: added by 
+app.post('/api/logs/add', async (req, res) => {
   var log = new Log({
-    type: 'manual',
+    type: 'MANUAL-CHECK-IN',
     session: req.body.session,
     user: req.body.user,
     //  addedBy: req.body.manager
@@ -264,14 +265,23 @@ app.post('/api/logs/new', async (req, res) => {
 })
 
 // --------------------------------
-// /api/logs/remove : Creates new Log
+// /api/logs/remove : Remove Log
 // --------------------------------
-//TODO: 
+//TODO: removed by
 app.post('/api/logs/remove', async (req, res) => {
-  await Log.delete({
+  console.log('in api remove', req.body.id)
+  await Log.findByIdAndRemove(req.body.id, {
     session: req.body.session,
     user: req.body.user,
   });
 
   res.end()
+})
+
+// --------------------------------------------------------
+// /api/devices/:deviceID/view : get detail of device
+// --------------------------------------------------------
+app.get('/api/devices/:deviceID/view', async (req, res) => {
+  let device = await Device.findById(req.params.deviceID)
+  res.json(device)
 })
