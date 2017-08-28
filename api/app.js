@@ -269,7 +269,6 @@ app.post('/api/logs/add', async (req, res) => {
 // --------------------------------
 //TODO: removed by
 app.post('/api/logs/remove', async (req, res) => {
-  console.log('in api remove', req.body.id)
   await Log.findByIdAndRemove(req.body.id, {
     session: req.body.session,
     user: req.body.user,

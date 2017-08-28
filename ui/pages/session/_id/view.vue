@@ -6,21 +6,6 @@
         <br>
         <b-card no-body>
             <b-tabs card>
-                <b-tab title="Times" active>
-                    <b-card title="Times">
-                        <b-table striped hover :items="session.times" :fields="fields_times">
-                            <template slot="day" scope="row">
-                                {{daysOfWeek[row.value]}}
-                            </template>
-                            <template slot="from" scope="item">
-                                {{item.value}}
-                            </template>
-                            <template slot="to" scope="item">
-                                {{item.value}}
-                            </template>
-                        </b-table>
-                    </b-card>
-                </b-tab>
                 <b-tab title="Attendees">
                     <b-card title="Attendees">
                         <b-table striped hover :items="session.attendees" :fields="fields_attendees">
@@ -40,6 +25,23 @@
                         </b-table>
                     </b-card>
                 </b-tab>
+
+                <b-tab title="Times">
+                    <b-card title="Times">
+                        <b-table striped hover :items="session.times" :fields="fields_times">
+                            <template slot="day" scope="row">
+                                {{daysOfWeek[row.value]}}
+                            </template>
+                            <template slot="from" scope="item">
+                                {{item.value}}
+                            </template>
+                            <template slot="to" scope="item">
+                                {{item.value}}
+                            </template>
+                        </b-table>
+                    </b-card>
+                </b-tab>
+
                 <b-tab title="Devices">
                     <b-card title="Devices">
                         <b-table striped hover :items="session.devices" :fields="fields_devices">
@@ -181,7 +183,6 @@ export default {
         async removeAttendee(user) {
 
             let logID = this.findLogID(user, this.$route.params.id)
-            console.log(logID)
             let res = await this.$axios.$post('logs/remove', {
                 session: this.$route.params.id,
                 user: user._id,
@@ -194,11 +195,9 @@ export default {
             this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.currentDate.toISOString())
         },
         findLogID(user, sessionID) {
-            return this.logs.forEach(current_log => {
+            return this.logs.find(current_log => {
                 if ((current_log.user._id + '' === user._id + '') && (current_log.session + '' === sessionID + '')) {
-                    {
-                        return true
-                    }
+                    return true
                 }
             })
         }
