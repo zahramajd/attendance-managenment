@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <img :src="qrImageSrc">
+        <span v-html="qrImageSVG"></span>
         <br> {{ token }}
     </div>
 </template>
@@ -20,6 +20,7 @@ img {
 
 <script>
 import totpToken from 'otplib/core/totpToken'
+import qrImage from 'qr-image'
 
 export default {
     data() {
@@ -47,8 +48,11 @@ export default {
         clearInterval(this.interval)
     },
     computed: {
-        qrImageSrc() {
-            return `https://api.qrserver.com/v1/create-qr-code/?size=${this.size}x${this.size}&data=${this.token}&bgcolor=${this.bgColor}`
+        // qrImageSrc() {
+        //     return `https://api.qrserver.com/v1/create-qr-code/?size=${this.size}x${this.size}&data=${this.token}&bgcolor=${this.bgColor}`
+        // }
+        qrImageSVG() {
+            return qrImage.imageSync(this.token, { type: 'svg' })
         }
     }
 }

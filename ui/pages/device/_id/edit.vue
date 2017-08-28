@@ -12,6 +12,8 @@
                 </div>
             </div>
         </b-card>
+        <b-btn @click="newSecret">create new secret</b-btn>
+
     </div>
 </template>
 
@@ -29,7 +31,11 @@ export default {
     methods: {
         async load() {
             this.device = await this.$axios.$get('devices/' + this.$route.params.id + '/view')
-        }
+        },
+        async newSecret() {
+            await this.$axios.get('devices/' + this.$route.params.id + '/secret/refresh')
+            await this.load()
+        },
     },
     async mounted() {
         await this.load()

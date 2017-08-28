@@ -3,6 +3,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const moment = require('moment')
 
+require('nuxt/lib/common/cli/errors')
+
 const {
   Device,
   User,
@@ -18,12 +20,11 @@ app.listen(4000)
 console.log('API Server listening on 4000')
 
 // --------------------------------
-// /api/new_dev : Creates new Device
+// /api/devices/new : Creates new Device
 // --------------------------------
 app.post('/api/devices/new', async (req, res) => {
 
   let secret = otplib.authenticator.generateSecret();
-
   var dev = new Device({
     name: req.body.name,
     secret: secret
@@ -32,6 +33,18 @@ app.post('/api/devices/new', async (req, res) => {
   await dev.save()
   res.end('new device has been added')
 
+})
+// --------------------------------
+// /api/devices/secret/refresh : 
+// --------------------------------
+app.get('/api/devices/:deviceID/secret/refresh', async (req, res) => {
+
+  let new_secret = otplib.authenticator.generateSecret()
+  let device = await Device.findById(req.params.deviceID)
+  device.secret = new_secret
+
+  await device.save()
+  res.end('bye')
 })
 
 // --------------------------------
