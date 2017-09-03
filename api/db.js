@@ -22,6 +22,7 @@ const User = mongoose.model('User', {
   first_name: String,
   last_name: String,
   username: String,
+  password: String,
   managerOf: [{
     type: Schema.Types.ObjectId,
     ref: 'Session'

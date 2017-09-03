@@ -1,7 +1,5 @@
 <template>
     <div>
-        <!-- Pets: {{ pets.map(p => p.name) }} -->
-
         <div class="col-lg-6">
             <br>
             <b-form-input v-model="otp" type="text" placeholder="Enter the OTP"></b-form-input>
