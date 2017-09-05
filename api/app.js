@@ -292,6 +292,8 @@ app.post('/api/sessions/:sessionID/edit', async(req, res) => {
   session.attendees = req.body.attendees
   session.devices = req.body.devices
   session.times = req.body.times
+  session.start_date = req.body.start_date
+  session.end_date = req.body.end_date
 
   await session.save()
 })

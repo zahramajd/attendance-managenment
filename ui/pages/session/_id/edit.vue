@@ -4,86 +4,117 @@
         <h3>{{session.name}}</h3>
         <br>
         <br>
-        <b-table striped hover :items="session.times" :fields="fields_times">
-            <template slot="day" scope="row">
-                {{daysOfWeek[row.value]}}
-            </template>
-            <template slot="from" scope="item">
-                {{item.value}}
-            </template>
-            <template slot="to" scope="item">
-                {{item.value}}
-            </template>
-        </b-table>
-        <b-button v-b-modal.modal-time>
-            add new time
-        </b-button>
+        <b-card no-body>
+            <b-tabs card>
+                <b-tab title="Times">
+                    <b-card title="Times">
+                        <b-table striped hover :items="session.times" :fields="fields_times">
+                            <template slot="day" scope="row">
+                                {{daysOfWeek[row.value]}}
+                            </template>
+                            <template slot="from" scope="item">
+                                {{item.value}}
+                            </template>
+                            <template slot="to" scope="item">
+                                {{item.value}}
+                            </template>
+                        </b-table>
+                        <b-button v-b-modal.modal-time>
+                            add new time
+                        </b-button>
 
-        <b-modal id="modal-time" title="add new time" @ok="submit_time">
+                        <b-modal id="modal-time" title="add new time" @ok="submit_time">
 
-            <form @submit.stop.prevent="submit">
-                <b-form-select placeholder="day" v-model="add_day" :options="options_week"></b-form-select>
-                <br>
-                <br>
-                <b-form-input type="number" placeholder="from" v-model="add_from"></b-form-input>
-                <br>
-                <b-form-input type="number" placeholder="to" v-model="add_to"></b-form-input>
-            </form>
+                            <form @submit.stop.prevent="submit">
+                                <b-form-select placeholder="day" v-model="add_day" :options="options_week"></b-form-select>
+                                <br>
+                                <br>
+                                <b-form-input type="number" placeholder="from" v-model="add_from"></b-form-input>
+                                <br>
+                                <b-form-input type="number" placeholder="to" v-model="add_to"></b-form-input>
+                            </form>
 
-        </b-modal>
-        <br>
-        <br>
-        <b-table striped hover :items="session.attendees" :fields="fields_attendees">
-            <template slot="first name" scope="item">
-                {{item.first_name}}
-            </template>
-            <template slot="last name" scope="item">
-                {{item.last_name}}
-            </template>
-            <template slot="user name" scope="item">
-                {{item.username}}
-            </template>
-        </b-table>
-        <b-button v-b-modal.modal-attendees>
-            add new attendee
-        </b-button>
-        <b-modal id="modal-attendees" title="add new attendee" @ok="submit_attendee">
+                        </b-modal>
+                    </b-card>
+                </b-tab>
 
-            <form @submit.stop.prevent="submit">
-                <b-form-select v-model="add_attendee" :options="options_users"></b-form-select>
-            </form>
+                <b-tab title="Attendees">
+                    <b-card title="Attendees">
+                        <b-table striped hover :items="session.attendees" :fields="fields_attendees">
+                            <template slot="first name" scope="item">
+                                {{item.first_name}}
+                            </template>
+                            <template slot="last name" scope="item">
+                                {{item.last_name}}
+                            </template>
+                            <template slot="user name" scope="item">
+                                {{item.username}}
+                            </template>
+                        </b-table>
+                        <b-button v-b-modal.modal-attendees>
+                            add new attendee
+                        </b-button>
+                        <b-modal id="modal-attendees" title="add new attendee" @ok="submit_attendee">
 
-        </b-modal>
-        <br>
-        <br>
-        <b-table striped hover :items="session.devices" :fields="fields_devices">
-            <template slot="device name" scope="item">
-                {{item.name}}
-            </template>
-        </b-table>
-        <b-button v-b-modal.modal-devices>
-            add new device
-        </b-button>
-        <b-modal id="modal-devices" title="add new device" @ok="submit_device">
+                            <form @submit.stop.prevent="submit">
+                                <b-form-select v-model="add_attendee" :options="options_users"></b-form-select>
+                            </form>
 
-            <form @submit.stop.prevent="submit">
-                <b-form-select v-model="add_device" :options="options_devices"></b-form-select>
-            </form>
+                        </b-modal>
+                    </b-card>
+                </b-tab>
+                <b-tab title="Devices">
+                    <b-card title="Devices">
+                        <b-table striped hover :items="session.devices" :fields="fields_devices">
+                            <template slot="device name" scope="item">
+                                {{item.name}}
+                            </template>
+                        </b-table>
+                        <b-button v-b-modal.modal-devices>
+                            add new device
+                        </b-button>
+                        <b-modal id="modal-devices" title="add new device" @ok="submit_device">
 
-        </b-modal>
-        <br>
-        <br>
-        <!-- <b-table striped hover :items="" :fields="">
-                                    <template slot="first name" scope="item">
-                                        {{item.first_name}}
-                                    </template>
-                                    <template slot="last name" scope="item">
-                                        {{item.last_name}}
-                                    </template>
-                                    <template slot="user name" scope="item">
-                                        {{item.username}}
-                                    </template>
-                                </b-table> -->
+                            <form @submit.stop.prevent="submit">
+                                <b-form-select v-model="add_device" :options="options_devices"></b-form-select>
+                            </form>
+
+                        </b-modal>
+                    </b-card>
+                    <!-- <b-table striped hover :items="" :fields="">
+                                                                                                                                                                                                                                                <template slot="first name" scope="item">
+                                                                                                                                                                                                                                                    {{item.first_name}}
+                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                <template slot="last name" scope="item">
+                                                                                                                                                                                                                                                    {{item.last_name}}
+                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                <template slot="user name" scope="item">
+                                                                                                                                                                                                                                                    {{item.username}}
+                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                            </b-table> -->
+
+                </b-tab>
+                <b-tab title="Date">
+                    <b-card title="Date">
+                        <b-form @submit="submit_date" inline>
+                            <b-form-group label="Start Date">
+                                <b-form-input type="number" v-model="start_date_day" required placeholder="Day"></b-form-input>
+                                <b-form-input type="number" v-model="start_date_month" required placeholder="Month"></b-form-input>
+                                <b-form-input type="number" v-model="start_date_yaer" required placeholder="Year"></b-form-input>
+                            </b-form-group>
+
+                            <b-form-group label="End Date">
+                                <b-form-input type="number" v-model="end_date_day" required placeholder="Day"></b-form-input>
+                                <b-form-input type="number" v-model="end_date_month" required placeholder="Month"></b-form-input>
+                                <b-form-input type="number" v-model="end_date_yaer" required placeholder="Year"></b-form-input>
+                            </b-form-group>
+                            <b-button type="submit" variant="primary">Submit</b-button>
+                        </b-form>
+                    </b-card>
+                </b-tab>
+            </b-tabs>
+        </b-card>
+        <br><br>
         <b-button v-b-modal.modal-manager>
             add new manager
         </b-button>
@@ -94,7 +125,6 @@
             </form>
 
         </b-modal>
-
     </div>
 </template>
 
@@ -140,7 +170,13 @@ export default {
             add_to: '',
             add_attendee: '',
             add_device: '',
-            add_manager: ''
+            add_manager: '',
+            start_date_day: '',
+            end_date_day: '',
+            start_date_month: '',
+            end_date_month: '',
+            start_date_year: '',
+            end_date_year: ''
         }
     },
     computed: {
@@ -171,7 +207,7 @@ export default {
                 label: 'to'
             }
         }),
-        options_users: function () {
+        options_users: function() {
 
             let options_users = []
             for (var el of this.all_users) {
@@ -179,7 +215,7 @@ export default {
             }
             return options_users
         },
-        options_devices: function () {
+        options_devices: function() {
 
             let options_devices = []
             for (var el of this.all_devices) {
@@ -222,7 +258,17 @@ export default {
             await console.log("manager")
             await this.$axios.post('/users/' + this.add_manager + '/edit', this.session)
 
-        }
+        },
+        async submit_date() {
+            console.log('in submit date', this.date_day)
+            let start_date = new Date(this.start_date_year, this.start_date_month, this.start_date_day + 1)
+            let end_date = new Date(this.end_date_year, this.end_date_month, this.end_date_day + 1)
+            const res = await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', {
+                start_date: start_date,
+                end_date: end_date
+            })
+
+        },
     }
 }
 </script>

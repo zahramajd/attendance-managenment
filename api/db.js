@@ -44,7 +44,9 @@ const Session = mongoose.model('Session', {
     from: Number,
     to: Number,
     day: Number
-  }]
+  }],
+  start_date: Date,
+  end_date: Date
 
 });
 
@@ -62,7 +64,12 @@ const Log = mongoose.model('Log', {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  timestamps: { createdAt: { type: Date, default: Date.now } }
+  timestamps: {
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }
 })
 
 module.exports = {
