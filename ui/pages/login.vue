@@ -30,10 +30,12 @@ export default {
     methods: {
         async login() {
             try {
-                const res = await this.$axios.post('/api/login', {
+                const res = await this.$axios.post('/login', {
                     password: this.password,
                     username: this.username
                 })
+                console.log(res)
+
             }
             catch (err) {
                 console.log(err)

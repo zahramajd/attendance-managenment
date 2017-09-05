@@ -55,15 +55,19 @@ passport.use(new LocalStrategy({
         return done(err)
       }
       if (!user) {
+        console.log('in !user')
         return done(null, false, {
           message: 'Incorrect username.'
         })
       }
       if (user.password !== password) {
+        console.log('in !password')
+
         return done(null, false, {
           message: 'Incorrect password.'
         })
       }
+      console.log('logged in')
       return done(null, user)
     })
   }
