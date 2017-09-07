@@ -81,6 +81,10 @@
                             <template slot="user name" scope="item">
                                 {{item.username}}
                             </template>
+                            <template slot="actions" scope="h">
+                                <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">present, click to remove</b-btn>
+                                <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">absent, click to add</b-btn>
+                            </template>
                         </b-table>
                     </b-card>
                 </b-tab>
@@ -100,7 +104,8 @@ export default {
             sortDesc: false,
             session: {},
             logs: [],
-            currentDate: new Date()
+            currentDate: new Date(),
+            days: []
         }
     },
     computed: {
@@ -193,6 +198,7 @@ export default {
         async load() {
             this.session = await this.$axios.$get('sessions/' + this.$route.params.id + '/detail')
             this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.currentDate.toISOString())
+            this.days = await this.$axios.$get('sessions/' + this.$route.params.id + '/days')
         },
         findLogID(user, sessionID) {
             return this.logs.find(current_log => {

@@ -142,7 +142,6 @@ app.get('/api/users', async(req, res) => {
 // -------------------------------- 
 app.post('/api/users/:userID/edit', async(req, res) => {
 
-  console.log("man")
   let user = await User.findById(req.params.userID)
   user.managerOf.push(req.body._id)
 
@@ -245,7 +244,6 @@ app.post('/api/sessions/new', async(req, res) => {
   var session = new Session({
     name: req.body.name,
   });
-
   await session.save()
   res.end('new session has been added')
 
@@ -307,13 +305,12 @@ app.get('/api/manager-of/:userID', async(req, res) => {
   res.json(user)
 })
 
-// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // /api/logs/sessionID/:date : List logs of a certain session at a certain time
-// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 app.get('/api/logs/:sessionID/:date', async(req, res) => {
 
   let date = moment(new Date(req.params.date))
-
   let logs = await Log.find({
     session: req.params.sessionID,
     'timestamps.createdAt': {
@@ -327,7 +324,7 @@ app.get('/api/logs/:sessionID/:date', async(req, res) => {
 })
 
 // --------------------------------
-// /api/logs/new : Creates new Log
+// /api/logs/new : Add new Log
 // --------------------------------
 //TODO: added by 
 app.post('/api/logs/add', async(req, res) => {
@@ -361,4 +358,35 @@ app.post('/api/logs/remove', async(req, res) => {
 app.get('/api/devices/:deviceID/view', async(req, res) => {
   let device = await Device.findById(req.params.deviceID)
   res.json(device)
+})
+
+// --------------------------------------------------------
+// /api/sessions/:sessionID/days : get days of session
+// --------------------------------------------------------
+app.get('/api/sessions/:sessionID/days', async(req, res) => {
+
+  let session = await Session.findById(req.params.sessionID)
+  let times_days = session.times.map(function (a) {
+    return a.day;
+  })
+
+  let start = moment(new Date(session.start_date)).clone()
+  let end = moment(new Date(session.end_date)).clone()
+
+  let daysOfSession = []
+  temp = start.clone()
+
+  while (temp.isSameOrBefore(end)) {
+    console.log('in while')
+    dayOfWeek = temp.weekday()
+    if (times_days.indexOf(dayOfWeek) > -1) {
+      daysOfSession.push(temp)
+      console.log('in if')
+    }
+    console.log('old temp', temp)
+    temp = temp.add(1, 'days')
+    console.log('new temp', temp)
+  }
+  console.log(daysOfSession)
+  res.json(daysOfSession)
 })
