@@ -12,3 +12,5 @@ dist
 api/test.js
 
 .DS_Store
+
+sessions
