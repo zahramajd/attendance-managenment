@@ -6,6 +6,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
+const FileStore = require('session-file-store')(expressSession);
 
 require('nuxt/lib/common/cli/errors')
 
@@ -27,7 +28,13 @@ console.log('API Server listening on 4000')
 // configure passport
 app.use(cookieParser())
 app.use(expressSession({
-  secret: 'cookies secret'
+  secret: 'cookies secret',
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week 
+  },
+  saveUninitialized: true,
+  resave: true,
+  store: new FileStore()
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -72,16 +79,21 @@ passport.use(new LocalStrategy({
     })
   }
 ))
-app.post('/api/login',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  })
-)
 
-// --------------------------------
+app.post('/api/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).json(err)
+    req.logIn(user, (err) => {
+      if (err) return res.status(401).json(info.message)
+      return res.json(user)
+    })
+  })(req, res, next)
+})
+
+// --------------------------------------
 // /api/devices/new : Creates new Device
-// --------------------------------
+// -------------------------------------
 app.post('/api/devices/new', async(req, res) => {
 
   let secret = otplib.authenticator.generateSecret();
@@ -310,6 +322,7 @@ app.get('/api/manager-of/:userID', async(req, res) => {
 // -----------------------------------------------------------------------------
 app.get('/api/logs/:sessionID/:date', async(req, res) => {
 
+  console.log('date: ', req.params.date)
   let date = moment(new Date(req.params.date))
   let logs = await Log.find({
     session: req.params.sessionID,
@@ -332,6 +345,7 @@ app.post('/api/logs/add', async(req, res) => {
     type: 'MANUAL-CHECK-IN',
     session: req.body.session,
     user: req.body.user,
+    'timestamps.createdAt': req.body.createdAt
     //  addedBy: req.body.manager
   });
 
@@ -377,16 +391,21 @@ app.get('/api/sessions/:sessionID/days', async(req, res) => {
   temp = start.clone()
 
   while (temp.isSameOrBefore(end)) {
-    console.log('in while')
     dayOfWeek = temp.weekday()
     if (times_days.indexOf(dayOfWeek) > -1) {
       daysOfSession.push(temp)
-      console.log('in if')
     }
-    console.log('old temp', temp)
-    temp = temp.add(1, 'days')
-    console.log('new temp', temp)
+    temp = temp.clone().add(1, 'days')
   }
-  console.log(daysOfSession)
   res.json(daysOfSession)
+})
+
+// --------------------------------------------------------
+// /api/user :
+// --------------------------------------------------------
+app.get('/api/user', async(req, res) => {
+  res.json({
+    session: req.session,
+    user: req.user
+  })
 })

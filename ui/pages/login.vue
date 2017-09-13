@@ -1,24 +1,21 @@
 <template>
     <div>
         <div class="col-lg-6">
-            <br>
-            <b-form-input v-model="username" type="text" placeholder="Enter username"></b-form-input>
-            <br>
-
-            <br>
-            <b-form-input v-model="password" type="text" placeholder="Enter password"></b-form-input>
-            <br>
-
-            <b-btn @click="login">Log in</b-btn>
-            <br>
-            <p>{{error}}</p>
-
+            <form @submit.prevent="login">
+                <br>
+                <b-form-input v-model="username" type="text" placeholder="Enter username"></b-form-input>
+                <br>
+                <b-form-input v-model="password" type="text" placeholder="Enter password"></b-form-input>
+                <br>
+                <b-btn @click="login">Log in</b-btn>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    middleware: 'auth',
     data() {
         return {
             password: '',
@@ -26,7 +23,6 @@ export default {
             error: ''
         }
     },
-
     methods: {
         async login() {
             try {
@@ -34,12 +30,11 @@ export default {
                     password: this.password,
                     username: this.username
                 })
-                console.log(res)
-
+                this.$router.push('/')
             }
             catch (err) {
                 console.log(err)
-                this.error = err
+                alert('خطا هنگام ورود')
             }
         }
     }

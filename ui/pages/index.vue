@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Pets: {{ pets.map(p => p.name) }} -->
-    
+
         <div class="col-lg-6">
             <br>
             <b-form-input v-model="device_name" type="text" placeholder="Enter the device name"></b-form-input>
@@ -12,15 +12,15 @@
             <br>
             <b-form-input v-model="first_name" type="text" placeholder="Enter the user first name"></b-form-input>
             <br>
-    
+
             <br>
             <b-form-input v-model="last_name" type="text" placeholder="Enter the user last name"></b-form-input>
             <br>
-    
+
             <br>
             <b-form-input v-model="username" type="text" placeholder="Enter the username"></b-form-input>
             <br>
-    
+
             <b-btn @click="newUser">New User</b-btn>
         </div>
     </div>
@@ -28,6 +28,7 @@
 
 <script>
 export default {
+    middleware: 'auth',
     data() {
         return {
             pets: [],

@@ -82,16 +82,16 @@
                         </b-modal>
                     </b-card>
                     <!-- <b-table striped hover :items="" :fields="">
-                                                                                                                                                                                                                                                <template slot="first name" scope="item">
-                                                                                                                                                                                                                                                    {{item.first_name}}
-                                                                                                                                                                                                                                                </template>
-                                                                                                                                                                                                                                                <template slot="last name" scope="item">
-                                                                                                                                                                                                                                                    {{item.last_name}}
-                                                                                                                                                                                                                                                </template>
-                                                                                                                                                                                                                                                <template slot="user name" scope="item">
-                                                                                                                                                                                                                                                    {{item.username}}
-                                                                                                                                                                                                                                                </template>
-                                                                                                                                                                                                                                            </b-table> -->
+                                                                                                                                                                                                                                                    <template slot="first name" scope="item">
+                                                                                                                                                                                                                                                        {{item.first_name}}
+                                                                                                                                                                                                                                                    </template>
+                                                                                                                                                                                                                                                    <template slot="last name" scope="item">
+                                                                                                                                                                                                                                                        {{item.last_name}}
+                                                                                                                                                                                                                                                    </template>
+                                                                                                                                                                                                                                                    <template slot="user name" scope="item">
+                                                                                                                                                                                                                                                        {{item.username}}
+                                                                                                                                                                                                                                                    </template>
+                                                                                                                                                                                                                                                </b-table> -->
 
                 </b-tab>
                 <b-tab title="Date">
@@ -130,6 +130,7 @@
 
 <script>
 export default {
+    middleware: 'auth',
     data() {
         return {
             attendees: '',

@@ -14,6 +14,16 @@
         <b-nav-item to="/logs">Log</b-nav-item>
       </b-nav>
 
+      <b-nav is-nav-bar class="ml-auto">
+        <b-nav-item-dropdown right v-if="$store.state.user">
+          <!-- Using button-content slot -->
+          <template slot="button-content">
+            {{ $store.state.user.username }}
+          </template>
+          <b-dropdown-item @click="logout">Signout</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-nav>
+
     </b-navbar>
 
     <div class="container">
@@ -21,6 +31,18 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+      this.$router.push('/login')
+      this.$store.commit('SET_USER', null)
+    }
+  }
+}
+</script>
 
 <style>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-    
+
         <b-table striped hover :items="users" :fields="fields">
             <template slot="first name" scope="item">
                 {{item.first_name}}
@@ -15,25 +15,25 @@
                 <b-btn size="sm" v-b-modal.editModal>edit</b-btn>
             </template>
         </b-table>
-    
+
         <b-modal id="editModal" title="Edit the user">
             hi
-    
+
         </b-modal>
-    
+
         <div class="col-lg-6">
             <br>
             <b-form-input v-model="first_name" type="text" placeholder="Enter the user first name"></b-form-input>
             <br>
-    
+
             <br>
             <b-form-input v-model="last_name" type="text" placeholder="Enter the user last name"></b-form-input>
             <br>
-    
+
             <br>
             <b-form-input v-model="username" type="text" placeholder="Enter the username"></b-form-input>
             <br>
-    
+
             <b-btn @click="newUser">New User</b-btn>
         </div>
     </div>
@@ -41,6 +41,7 @@
 
 <script>
 export default {
+    middleware: 'auth',
     data() {
         return {
             first_name: '',

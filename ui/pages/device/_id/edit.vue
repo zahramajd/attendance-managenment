@@ -22,6 +22,7 @@ import totpToken from 'otplib/core/totpToken'
 import qr from '~/components/qr'
 
 export default {
+    middleware: 'auth',
     components: { qr },
     data() {
         return {

@@ -2,6 +2,7 @@
     <div>
         <br>
         <h3>{{session.name}}</h3>
+        <h4>{{authenticated_user.username}}</h4>
         <br>
         <br>
         <b-card no-body>
@@ -70,22 +71,31 @@
                     </b-card>
                 </b-tab>
                 <b-tab title="Attended">
-                    <b-card title="Attended">
-                        <b-table striped hover :items="attended" :fields="fields_attendees">
-                            <template slot="first name" scope="item">
-                                {{item.first_name}}
-                            </template>
-                            <template slot="last name" scope="item">
-                                {{item.last_name}}
-                            </template>
-                            <template slot="user name" scope="item">
-                                {{item.username}}
-                            </template>
-                            <template slot="actions" scope="h">
-                                <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">present, click to remove</b-btn>
-                                <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">absent, click to add</b-btn>
-                            </template>
-                        </b-table>
+                    <b-card title="Attended" :sub-title="selected_day_jalali">
+                        <div class="row">
+                            <div class="col-4">
+                                <b-form-select v-model="selected_day" :options="date_options" class="mb-3" :select-size="4" @input="load" />
+                            </div>
+                            <div class="col-8">
+                                <div v-if="loading">Loading... </div>
+                                <b-table v-else striped hover :items="attended" :fields="fields_attendees">
+                                    <template slot="first name" scope="item">
+                                        {{item.first_name}}
+                                    </template>
+                                    <template slot="last name" scope="item">
+                                        {{item.last_name}}
+                                    </template>
+                                    <template slot="user name" scope="item">
+                                        {{item.username}}
+                                    </template>
+                                    <template slot="actions" scope="h">
+                                        <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">present, click to remove</b-btn>
+                                        <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">absent, click to add</b-btn>
+                                    </template>
+                                </b-table>
+                            </div>
+                        </div>
+
                     </b-card>
                 </b-tab>
             </b-tabs>
@@ -94,7 +104,14 @@
 </template>
 
 <script>
+import moment from 'moment-jalaali'
+
+moment.loadPersian()
+
+const jalaali = date => moment(date).format('jYYYY/jM/jD')
+
 export default {
+    middleware: 'auth',
     data() {
         return {
             attendees: '',
@@ -105,10 +122,21 @@ export default {
             session: {},
             logs: [],
             currentDate: new Date(),
-            days: []
+            days: [],
+            selected_day: new Date(),
+            loading: false,
         }
     },
     computed: {
+        selected_day_jalali() {
+            return jalaali(this.selected_day)
+        },
+        date_options() {
+            return this.days.map(date => ({
+                text: jalaali(date),
+                value: date
+            }))
+        },
         fields_attendees: () => ({
             first_name: {
                 label: 'first name',
@@ -182,6 +210,7 @@ export default {
             let res = await this.$axios.$post('logs/add', {
                 session: this.$route.params.id,
                 user: user._id,
+                createdAt: this.selected_day
             })
             this.load()
         },
@@ -196,9 +225,11 @@ export default {
             this.load()
         },
         async load() {
+            this.loading = true
             this.session = await this.$axios.$get('sessions/' + this.$route.params.id + '/detail')
-            this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.currentDate.toISOString())
+            this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day)
             this.days = await this.$axios.$get('sessions/' + this.$route.params.id + '/days')
+            this.loading = false
         },
         findLogID(user, sessionID) {
             return this.logs.find(current_log => {
