@@ -24,7 +24,6 @@ app.use(bodyParser.json())
 app.listen(4000)
 console.log('API Server listening on 4000')
 
-
 // configure passport
 app.use(cookieParser())
 app.use(expressSession({

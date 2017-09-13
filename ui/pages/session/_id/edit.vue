@@ -82,16 +82,16 @@
                         </b-modal>
                     </b-card>
                     <!-- <b-table striped hover :items="" :fields="">
-                                                                                                                                                                                                                                                    <template slot="first name" scope="item">
-                                                                                                                                                                                                                                                        {{item.first_name}}
-                                                                                                                                                                                                                                                    </template>
-                                                                                                                                                                                                                                                    <template slot="last name" scope="item">
-                                                                                                                                                                                                                                                        {{item.last_name}}
-                                                                                                                                                                                                                                                    </template>
-                                                                                                                                                                                                                                                    <template slot="user name" scope="item">
-                                                                                                                                                                                                                                                        {{item.username}}
-                                                                                                                                                                                                                                                    </template>
-                                                                                                                                                                                                                                                </b-table> -->
+                                                                                                                                                                                                                                                                <template slot="first name" scope="item">
+                                                                                                                                                                                                                                                                    {{item.first_name}}
+                                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                                <template slot="last name" scope="item">
+                                                                                                                                                                                                                                                                    {{item.last_name}}
+                                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                                <template slot="user name" scope="item">
+                                                                                                                                                                                                                                                                    {{item.username}}
+                                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                            </b-table> -->
 
                 </b-tab>
                 <b-tab title="Date">
@@ -100,13 +100,13 @@
                             <b-form-group label="Start Date">
                                 <b-form-input type="number" v-model="start_date_day" required placeholder="Day"></b-form-input>
                                 <b-form-input type="number" v-model="start_date_month" required placeholder="Month"></b-form-input>
-                                <b-form-input type="number" v-model="start_date_yaer" required placeholder="Year"></b-form-input>
+                                <b-form-input type="number" v-model="start_date_year" required placeholder="Year"></b-form-input>
                             </b-form-group>
 
                             <b-form-group label="End Date">
                                 <b-form-input type="number" v-model="end_date_day" required placeholder="Day"></b-form-input>
                                 <b-form-input type="number" v-model="end_date_month" required placeholder="Month"></b-form-input>
-                                <b-form-input type="number" v-model="end_date_yaer" required placeholder="Year"></b-form-input>
+                                <b-form-input type="number" v-model="end_date_year" required placeholder="Year"></b-form-input>
                             </b-form-group>
                             <b-button type="submit" variant="primary">Submit</b-button>
                         </b-form>

@@ -1,5 +1,3 @@
-require('./api/start')
-
 module.exports = {
   srcDir: 'ui',
   mode: 'spa',

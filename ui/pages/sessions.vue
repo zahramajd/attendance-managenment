@@ -5,7 +5,11 @@
                 {{item.name}}
             </template>
             <template slot="actions" scope="item">
-                <b-btn size="sm" :to="'/session/' +  item.item._id + '/edit'">detail</b-btn>
+                <b-button-group>
+
+                    <b-btn size="sm" :to="'/session/' +  item.item._id + '/view'">view</b-btn>
+                    <b-btn size="sm" :to="'/session/' +  item.item._id + '/edit'">edit</b-btn>
+                </b-button-group>
             </template>
         </b-table>
         <div class="col-lg-6">
@@ -23,6 +27,7 @@ export default {
     middleware: 'auth',
     data() {
         return {
+            name: '',
             sessions: [],
             fields: {
                 name: {

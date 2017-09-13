@@ -25,6 +25,7 @@
     "otplib": "^5.1.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "pm2": "^2.6.1",
     "qr-image": "^3.2.0",
     "sass-loader": "^6.0.6",
     "session": "^0.1.0",
@@ -36,7 +37,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "api-dev": "nodemon api/app.js",
+    "api-dev": "nodemon -e .js --watch api api/app.js",
     "precommit": "npm run lint"
   },
   "devDependencies": {

@@ -2,7 +2,6 @@
     <div>
         <br>
         <h3>{{session.name}}</h3>
-        <h4>{{authenticated_user.username}}</h4>
         <br>
         <br>
         <b-card no-body>
