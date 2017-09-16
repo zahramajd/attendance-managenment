@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- Pets: {{ pets.map(p => p.name) }} -->
 
         <div class="col-lg-6">
             <br>

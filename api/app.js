@@ -1,4 +1,4 @@
-const otplib = require('otplib').default
+const otplib = require('otplib')
 const express = require('express')
 const bodyParser = require('body-parser')
 const moment = require('moment')
@@ -7,6 +7,7 @@ const LocalStrategy = require('passport-local').Strategy
 const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
 const FileStore = require('session-file-store')(expressSession);
+const ip = require('ip')
 
 require('nuxt/lib/common/cli/errors')
 
@@ -50,9 +51,9 @@ passport.deserializeUser((id, done) => {
 
 
 passport.use(new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password'
-  },
+  usernameField: 'username',
+  passwordField: 'password'
+},
   (username, password, done) => {
     User.findOne({
       username: username
@@ -73,7 +74,6 @@ passport.use(new LocalStrategy({
           message: 'Incorrect password.'
         })
       }
-      console.log('logged in')
       return done(null, user)
     })
   }
@@ -93,7 +93,7 @@ app.post('/api/login', (req, res, next) => {
 // --------------------------------------
 // /api/devices/new : Creates new Device
 // -------------------------------------
-app.post('/api/devices/new', async(req, res) => {
+app.post('/api/devices/new', async (req, res) => {
 
   let secret = otplib.authenticator.generateSecret();
   var dev = new Device({
@@ -108,7 +108,7 @@ app.post('/api/devices/new', async(req, res) => {
 // --------------------------------
 // /api/devices/secret/refresh : 
 // --------------------------------
-app.get('/api/devices/:deviceID/secret/refresh', async(req, res) => {
+app.get('/api/devices/:deviceID/secret/refresh', async (req, res) => {
 
   let new_secret = otplib.authenticator.generateSecret()
   let device = await Device.findById(req.params.deviceID)
@@ -121,7 +121,7 @@ app.get('/api/devices/:deviceID/secret/refresh', async(req, res) => {
 // --------------------------------
 // /api/devices : List all devices
 // --------------------------------
-app.get('/api/devices', async(req, res) => {
+app.get('/api/devices', async (req, res) => {
   let devices = await Device.find({})
   res.json(devices)
 })
@@ -129,7 +129,7 @@ app.get('/api/devices', async(req, res) => {
 // --------------------------------
 // /api/new_user : Creates new User
 // --------------------------------
-app.post('/api/users/new', async(req, res) => {
+app.post('/api/users/new', async (req, res) => {
   var user = new User({
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -143,7 +143,7 @@ app.post('/api/users/new', async(req, res) => {
 // --------------------------------
 // /api/users : List all users
 // --------------------------------
-app.get('/api/users', async(req, res) => {
+app.get('/api/users', async (req, res) => {
   let users = await User.find({})
   res.json(users)
 })
@@ -151,7 +151,7 @@ app.get('/api/users', async(req, res) => {
 // --------------------------------
 // /api/editusers : edit users
 // -------------------------------- 
-app.post('/api/users/:userID/edit', async(req, res) => {
+app.post('/api/users/:userID/edit', async (req, res) => {
 
   let user = await User.findById(req.params.userID)
   user.managerOf.push(req.body._id)
@@ -162,12 +162,14 @@ app.post('/api/users/:userID/edit', async(req, res) => {
 // --------------------------------
 // /api/verifyotp : verify OTP
 // --------------------------------
-app.post('/api/otp/verify', async(req, res) => {
+app.post('/api/otp/verify', async (req, res) => {
 
   const {
     username,
     otp
   } = req.body;
+
+  console.log('in verify', username, otp)
 
   let devices = await Device.find({})
   let device = devices.find(d => d.otp === otp)
@@ -217,7 +219,12 @@ app.post('/api/otp/verify', async(req, res) => {
       error: 'The user does not exist'
     })
   }
+
+
   let session = await getSession(Date.now(), device._id, userID._id)
+
+
+
   if (!session) {
     return res.json({
       error: 'The session is not now or the user is not in the list'
@@ -243,7 +250,7 @@ app.post('/api/otp/verify', async(req, res) => {
 // --------------------------------
 // /api/logs : List all logs
 // --------------------------------
-app.get('/api/logs', async(req, res) => {
+app.get('/api/logs', async (req, res) => {
   let logs = await Log.find({})
   res.json(logs)
 })
@@ -251,7 +258,7 @@ app.get('/api/logs', async(req, res) => {
 // ----------------------------------------
 // /api/sessions/new : Creates new Session
 // ----------------------------------------
-app.post('/api/sessions/new', async(req, res) => {
+app.post('/api/sessions/new', async (req, res) => {
   var session = new Session({
     name: req.body.name,
   });
@@ -262,7 +269,7 @@ app.post('/api/sessions/new', async(req, res) => {
 // ----------------------------------
 // /api/sessions : List all sessions
 // ----------------------------------
-app.get('/api/sessions', async(req, res) => {
+app.get('/api/sessions', async (req, res) => {
   let sessions = await Session.find({})
   res.json(sessions)
 })
@@ -270,7 +277,7 @@ app.get('/api/sessions', async(req, res) => {
 // --------------------------------------------------------
 // /api/sessions/:sessionID/detail : get detail of session
 // --------------------------------------------------------
-app.get('/api/sessions/:sessionID/detail', async(req, res) => {
+app.get('/api/sessions/:sessionID/detail', async (req, res) => {
   let session = await Session.findById(req.params.sessionID).populate('devices').populate('attendees')
   res.json(session)
 })
@@ -278,7 +285,7 @@ app.get('/api/sessions/:sessionID/detail', async(req, res) => {
 // ---------------------------------------------------------------
 // /api/sessions/:sessionID/times/add : add new time to a session
 // ---------------------------------------------------------------
-app.post('/api/sessions/:sessionID/times/add', async(req, res) => {
+app.post('/api/sessions/:sessionID/times/add', async (req, res) => {
 
   Session.findByIdAndUpdate(
     req.params.sessionID, {
@@ -296,7 +303,7 @@ app.post('/api/sessions/:sessionID/times/add', async(req, res) => {
 // --------------------------------------------
 // /api/sessions/:sessionID/edit: edit session
 // --------------------------------------------
-app.post('/api/sessions/:sessionID/edit', async(req, res) => {
+app.post('/api/sessions/:sessionID/edit', async (req, res) => {
   let session = await Session.findById(req.params.sessionID)
   session.attendees = req.body.attendees
   session.devices = req.body.devices
@@ -311,7 +318,7 @@ app.post('/api/sessions/:sessionID/edit', async(req, res) => {
 // ----------------------------------------
 // /api/manager-of/:userID : get managerOf
 // -----------------------------------------
-app.get('/api/manager-of/:userID', async(req, res) => {
+app.get('/api/manager-of/:userID', async (req, res) => {
   let user = await User.findById(req.params.userID).populate('managerOf')
   res.json(user)
 })
@@ -319,7 +326,7 @@ app.get('/api/manager-of/:userID', async(req, res) => {
 // -----------------------------------------------------------------------------
 // /api/logs/sessionID/:date : List logs of a certain session at a certain time
 // -----------------------------------------------------------------------------
-app.get('/api/logs/:sessionID/:date', async(req, res) => {
+app.get('/api/logs/:sessionID/:date', async (req, res) => {
 
   console.log('date: ', req.params.date)
   let date = moment(new Date(req.params.date))
@@ -339,7 +346,7 @@ app.get('/api/logs/:sessionID/:date', async(req, res) => {
 // /api/logs/new : Add new Log
 // --------------------------------
 //TODO: added by 
-app.post('/api/logs/add', async(req, res) => {
+app.post('/api/logs/add', async (req, res) => {
   var log = new Log({
     type: 'MANUAL-CHECK-IN',
     session: req.body.session,
@@ -356,7 +363,7 @@ app.post('/api/logs/add', async(req, res) => {
 // /api/logs/remove : Remove Log
 // --------------------------------
 //TODO: removed by
-app.post('/api/logs/remove', async(req, res) => {
+app.post('/api/logs/remove', async (req, res) => {
   await Log.findByIdAndRemove(req.body.id, {
     session: req.body.session,
     user: req.body.user,
@@ -368,7 +375,7 @@ app.post('/api/logs/remove', async(req, res) => {
 // --------------------------------------------------------
 // /api/devices/:deviceID/view : get detail of device
 // --------------------------------------------------------
-app.get('/api/devices/:deviceID/view', async(req, res) => {
+app.get('/api/devices/:deviceID/view', async (req, res) => {
   let device = await Device.findById(req.params.deviceID)
   res.json(device)
 })
@@ -376,7 +383,7 @@ app.get('/api/devices/:deviceID/view', async(req, res) => {
 // --------------------------------------------------------
 // /api/sessions/:sessionID/days : get days of session
 // --------------------------------------------------------
-app.get('/api/sessions/:sessionID/days', async(req, res) => {
+app.get('/api/sessions/:sessionID/days', async (req, res) => {
 
   let session = await Session.findById(req.params.sessionID)
   let times_days = session.times.map(function (a) {
@@ -402,9 +409,24 @@ app.get('/api/sessions/:sessionID/days', async(req, res) => {
 // --------------------------------------------------------
 // /api/user :
 // --------------------------------------------------------
-app.get('/api/user', async(req, res) => {
+app.get('/api/user', async (req, res) => {
   res.json({
     session: req.session,
     user: req.user
   })
+})
+
+// --------------------------------------------------------
+// /api/ip :
+// --------------------------------------------------------
+app.get('/api/ip', async (req, res) => {
+  res.end(ip.address())
+})
+
+// --------------------------------------------------------
+// /api/client :
+// --------------------------------------------------------
+app.post('/api/client', async (req, res) => {
+
+  console.log(req.body.qr)
 })

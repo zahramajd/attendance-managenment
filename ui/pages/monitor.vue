@@ -27,6 +27,7 @@ export default {
       token: state => state.otp.token
     }),
     qrImageSrc() {
+      // Naa :)) ya code ro pak kardi ya yeja hast
       return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.token}&bgcolor=E9E8E9`
     },
   }

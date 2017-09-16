@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const totpToken = require('otplib/core/totpToken').default
+const { totpToken } = require('otplib/core')
+const crypto = require('crypto')
+
+
 
 mongoose.Promise = Promise
 mongoose.connect('mongodb://localhost/test', {
@@ -13,7 +16,7 @@ const _Device = new Schema({
 })
 
 _Device.virtual('otp').get(function () {
-  return totpToken(this.secret)
+  return totpToken(this.secret, { step: 30, crypto })
 })
 
 const Device = mongoose.model('Device', _Device);

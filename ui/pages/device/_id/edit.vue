@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import totpToken from 'otplib/core/totpToken'
+import { totpToken } from 'otplib/core'
 import qr from '~/components/qr'
 
 export default {

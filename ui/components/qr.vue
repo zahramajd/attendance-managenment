@@ -2,6 +2,7 @@
     <div class="container">
         <span v-html="qrImageSVG"></span>
         <br> {{ token }}
+        <br> {{ qrData }}
     </div>
 </template>
 
@@ -19,13 +20,15 @@ img {
 </style>
 
 <script>
-import totpToken from 'otplib/core/totpToken'
+import { totpToken } from 'otplib/core'
 import qrImage from 'qr-image'
+import crypto from 'crypto'
 
 export default {
     data() {
         return {
-            token: ''
+            token: '',
+            endpoint: 'http://localhost:3000'
         }
     },
     props: {
@@ -39,20 +42,27 @@ export default {
             default: 200
         }
     },
-    mounted() {
+    async mounted() {
+        const ip = await this.$axios.$get('ip')
+        this.endpoint = 'http://' + ip + ':3000'
         this.interval = setInterval(() => {
-            this.token = totpToken(this.secret, { step: 30 })
+            this.token = totpToken(this.secret, { step: 30, crypto })
         }, 1000)
+        console.log('token', this.token)
+
     },
     destroy() {
         clearInterval(this.interval)
     },
     computed: {
-        // qrImageSrc() {
-        //     return `https://api.qrserver.com/v1/create-qr-code/?size=${this.size}x${this.size}&data=${this.token}&bgcolor=${this.bgColor}`
-        // }
+
+        qrData() {
+            return this.token
+        },
         qrImageSVG() {
-            return qrImage.imageSync(this.token, { type: 'svg' })
+            // We add current page URL to QR code so app can discover it's server without config :D
+
+            return qrImage.imageSync(JSON.stringify(this.qrData), { type: 'svg' })
         }
     }
 }
