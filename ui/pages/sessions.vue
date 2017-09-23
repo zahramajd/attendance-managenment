@@ -6,17 +6,17 @@
             </template>
             <template slot="actions" scope="item">
                 <b-button-group>
-                    <b-btn size="sm" :to="'/session/' +  item.item._id + '/view'">view</b-btn>
-                    <b-btn size="sm" :to="'/session/' +  item.item._id + '/edit'">edit</b-btn>
+                    <b-btn size="sm" :to="'/session/' +  item.item._id + '/view'">مشاهده</b-btn>
+                    <b-btn size="sm" :to="'/session/' +  item.item._id + '/edit'">تغییر</b-btn>
                 </b-button-group>
             </template>
         </b-table>
         <div class="col-lg-6">
             <br>
-            <b-form-input v-model="name" type="text" placeholder="enter the session name"></b-form-input>
+            <b-form-input v-model="name" type="text" placeholder="نام درس"></b-form-input>
             <br>
 
-            <b-btn @click="newSession">New Session</b-btn>
+            <b-btn @click="newSession">ایجاد درس</b-btn>
         </div>
     </div>
 </template>
@@ -30,10 +30,10 @@ export default {
             sessions: [],
             fields: {
                 name: {
-                    label: 'session name',
+                    label: 'نام درس',
                 },
                 actions: {
-                    label: 'detail'
+                    label: 'عملیات'
                 }
             },
         }

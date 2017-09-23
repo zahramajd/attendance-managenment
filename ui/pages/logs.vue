@@ -1,6 +1,6 @@
 <template>
     <div>
-    
+
         <b-table striped hover :items="logs" :fields="fields">
             <template slot="action type" scope="item">
                 {{item.type}}
@@ -15,7 +15,7 @@
                 {{item.user}}
             </template>
         </b-table>
-    
+
     </div>
 </template>
 
@@ -26,16 +26,16 @@ export default {
             logs: [],
             fields: {
                 type: {
-                    label: 'action type',
+                    label: 'نوع عملیات',
                 },
                 device: {
-                    label: 'device id',
+                    label: 'دستگاه',
                 },
                 session: {
-                    label: 'session id'
+                    label: 'درس'
                 },
                 user: {
-                    label: 'user id'
+                    label: 'کاربر'
                 }
             },
 

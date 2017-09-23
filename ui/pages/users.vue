@@ -16,7 +16,7 @@
             </template>
         </b-table>
 
-        <b-modal v-model="modalShow" title="Edit the user" @ok="handleOk">
+        <b-modal v-model="modalShow" title="تغییر اطلاعات کاربر" @ok="handleOk">
 
             <template v-if="lastClickedItem">
                 <b-form-input v-model="lastClickedItem.first_name" type="text"></b-form-input>

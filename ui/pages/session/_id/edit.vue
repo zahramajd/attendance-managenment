@@ -6,40 +6,31 @@
         <br>
         <b-card no-body>
             <b-tabs card>
-                <b-tab title="Times">
-                    <b-card title="Times">
+                <b-tab title="زمان ها">
+                    <b-card>
                         <b-table striped hover :items="session.times" :fields="fields_times">
-                            <template slot="day" scope="row">
-                                {{daysOfWeek[row.value]}}
-                            </template>
-                            <template slot="from" scope="item">
-                                {{item.value}}
-                            </template>
-                            <template slot="to" scope="item">
-                                {{item.value}}
-                            </template>
                         </b-table>
                         <b-button v-b-modal.modal-time>
-                            add new time
+                            افزودن زمان جدید
                         </b-button>
 
-                        <b-modal id="modal-time" title="add new time" @ok="submit_time">
+                        <b-modal id="modal-time" title="اضافه کردن زمان جدید" @ok="submit_time">
 
                             <form @submit.stop.prevent="submit">
                                 <b-form-select placeholder="day" v-model="add_day" :options="options_week"></b-form-select>
                                 <br>
                                 <br>
-                                <b-form-input type="number" placeholder="from" v-model="add_from"></b-form-input>
+                                <b-form-input type="number" placeholder="از" v-model="add_from"></b-form-input>
                                 <br>
-                                <b-form-input type="number" placeholder="to" v-model="add_to"></b-form-input>
+                                <b-form-input type="number" placeholder="تا" v-model="add_to"></b-form-input>
                             </form>
 
                         </b-modal>
                     </b-card>
                 </b-tab>
 
-                <b-tab title="Attendees">
-                    <b-card title="Attendees">
+                <b-tab title="شرکت کنندگان">
+                    <b-card>
                         <b-table striped hover :items="session.attendees" :fields="fields_attendees">
                             <template slot="first name" scope="item">
                                 {{item.first_name}}
@@ -52,9 +43,9 @@
                             </template>
                         </b-table>
                         <b-button v-b-modal.modal-attendees>
-                            add new attendee
+                            افزودن شرکت کننده
                         </b-button>
-                        <b-modal id="modal-attendees" title="add new attendee" @ok="submit_attendee">
+                        <b-modal id="modal-attendees" title="افزودن شرکت کننده" @ok="submit_attendee">
 
                             <form @submit.stop.prevent="submit">
                                 <b-form-select v-model="add_attendee" :options="options_users"></b-form-select>
@@ -63,17 +54,17 @@
                         </b-modal>
                     </b-card>
                 </b-tab>
-                <b-tab title="Devices">
-                    <b-card title="Devices">
+                <b-tab title="دستگاه ها">
+                    <b-card>
                         <b-table striped hover :items="session.devices" :fields="fields_devices">
                             <template slot="device name" scope="item">
                                 {{item.name}}
                             </template>
                         </b-table>
                         <b-button v-b-modal.modal-devices>
-                            add new device
+                            افزودن دستگاه
                         </b-button>
-                        <b-modal id="modal-devices" title="add new device" @ok="submit_device">
+                        <b-modal id="modal-devices" title="افزودن دستگاه " @ok="submit_device">
 
                             <form @submit.stop.prevent="submit">
                                 <b-form-select v-model="add_device" :options="options_devices"></b-form-select>
@@ -82,33 +73,33 @@
                         </b-modal>
                     </b-card>
                     <!-- <b-table striped hover :items="" :fields="">
-                                                                                                                                                                                                                                                                        <template slot="first name" scope="item">
-                                                                                                                                                                                                                                                                            {{item.first_name}}
-                                                                                                                                                                                                                                                                        </template>
-                                                                                                                                                                                                                                                                        <template slot="last name" scope="item">
-                                                                                                                                                                                                                                                                            {{item.last_name}}
-                                                                                                                                                                                                                                                                        </template>
-                                                                                                                                                                                                                                                                        <template slot="user name" scope="item">
-                                                                                                                                                                                                                                                                            {{item.username}}
-                                                                                                                                                                                                                                                                        </template>
-                                                                                                                                                                                                                                                                    </b-table> -->
+                                                                                                                                                                                                                                                                                                                                                                                                <template slot="first name" scope="item">
+                                                                                                                                                                                                                                                                                                                                                                                                    {{item.first_name}}
+                                                                                                                                                                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                                                                                                                                                                <template slot="last name" scope="item">
+                                                                                                                                                                                                                                                                                                                                                                                                    {{item.last_name}}
+                                                                                                                                                                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                                                                                                                                                                <template slot="user name" scope="item">
+                                                                                                                                                                                                                                                                                                                                                                                                    {{item.username}}
+                                                                                                                                                                                                                                                                                                                                                                                                </template>
+                                                                                                                                                                                                                                                                                                                                                                                            </b-table> -->
 
                 </b-tab>
-                <b-tab title="Date">
-                    <b-card title="Date">
+                <b-tab title="روز">
+                    <b-card>
                         <b-form @submit="submit_date" inline>
-                            <b-form-group label="Start Date">
-                                <b-form-input type="number" v-model="start_date_day" required placeholder="Day"></b-form-input>
-                                <b-form-input type="number" v-model="start_date_month" required placeholder="Month"></b-form-input>
-                                <b-form-input type="number" v-model="start_date_year" required placeholder="Year"></b-form-input>
+                            <b-form-group label="شروع کلاس">
+                                <b-form-input type="number" v-model="start_date_day" required placeholder="روز"></b-form-input>
+                                <b-form-input type="number" v-model="start_date_month" required placeholder="ماه"></b-form-input>
+                                <b-form-input type="number" v-model="start_date_year" required placeholder="سال"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group label="End Date">
-                                <b-form-input type="number" v-model="end_date_day" required placeholder="Day"></b-form-input>
-                                <b-form-input type="number" v-model="end_date_month" required placeholder="Month"></b-form-input>
-                                <b-form-input type="number" v-model="end_date_year" required placeholder="Year"></b-form-input>
+                            <b-form-group label="پایان کلاس">
+                                <b-form-input type="number" v-model="end_date_day" required placeholder="روز"></b-form-input>
+                                <b-form-input type="number" v-model="end_date_month" required placeholder="ماه"></b-form-input>
+                                <b-form-input type="number" v-model="end_date_year" required placeholder="سال"></b-form-input>
                             </b-form-group>
-                            <b-button type="submit" variant="primary">Submit</b-button>
+                            <b-button type="submit" variant="primary">ثبت</b-button>
                         </b-form>
                     </b-card>
                 </b-tab>
@@ -116,9 +107,8 @@
         </b-card>
         <br><br>
         <b-button v-b-modal.modal-manager>
-            add new manager
-        </b-button>
-        <b-modal id="modal-manager" title="add new manager" @ok="submit_manager">
+            افزودن استاد </b-button>
+        <b-modal id="modal-manager" title="افزودن استاد" @ok="submit_manager">
 
             <form @submit.stop.prevent="submit">
                 <b-form-select v-model="add_manager" :options="options_users"></b-form-select>
@@ -135,7 +125,6 @@ export default {
         return {
             attendees: '',
             devices: '',
-            daysOfWeek: ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
             add_day: 6,
             options_week: [
                 {
@@ -181,33 +170,35 @@ export default {
         }
     },
     computed: {
+        daysOfWeek: () => ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
         fields_attendees: () => ({
             first_name: {
-                label: 'first name',
+                label: 'نام',
             },
             last_name: {
-                label: 'last name',
+                label: 'نام خانوادگی',
             },
             username: {
-                label: 'user name ',
+                label: 'نام کاربری',
             },
         }),
         fields_devices: () => ({
             name: {
-                label: 'device name'
+                label: 'نام دستگاه'
             }
         }),
-        fields_times: () => ({
-            day: {
-                label: 'day'
-            },
-            from: {
-                label: 'from'
-            },
-            to: {
-                label: 'to'
+        fields_times() {
+            return {
+                day: {
+                    label: 'روز',
+                    formatter: (value, key, item) => this.daysOfWeek[value]
+                },
+                time: {
+                    label: 'زمان برگزاری',
+                    formatter: (value, key, item) => item.from + '-' + item.to
+                }
             }
-        }),
+        },
         options_users: function() {
 
             let options_users = []

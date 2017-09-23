@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <span v-html="qrImageSVG"></span>
-        <br> {{ token }}
-        <br> {{ qrData }}
+        <!-- <br> {{ token }}
+            <br> {{ qrData }} -->
     </div>
 </template>
 
