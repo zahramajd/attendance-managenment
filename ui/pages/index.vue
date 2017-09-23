@@ -1,27 +1,27 @@
 <template>
     <div>
 
-        <div class="col-lg-6">
+        <div>
             <br>
-            <b-form-input v-model="device_name" type="text" placeholder="Enter the device name"></b-form-input>
-            <br>
-            <b-btn @click="newDev">New Device</b-btn>
+            <b-card-group deck class="mb-3">
+                <b-card bg-variant="primary" text-variant="white" header="کاربران" class="text-center">
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </b-card>
+                <b-card bg-variant="danger" text-variant="white" header="دروس" class="text-center">
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </b-card>
+            </b-card-group>
+            <b-card-group deck class="mb-3">
+                <b-card bg-variant="success" text-variant="white" header="دستگاه ها" class="text-center">
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </b-card>
+                <b-card bg-variant="warning" text-variant="white" header="گزارش ها" class="text-center">
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </b-card>
+            </b-card-group>
+
         </div>
-        <div class="col-lg-6">
-            <br>
-            <b-form-input v-model="first_name" type="text" placeholder="Enter the user first name"></b-form-input>
-            <br>
 
-            <br>
-            <b-form-input v-model="last_name" type="text" placeholder="Enter the user last name"></b-form-input>
-            <br>
-
-            <br>
-            <b-form-input v-model="username" type="text" placeholder="Enter the username"></b-form-input>
-            <br>
-
-            <b-btn @click="newUser">New User</b-btn>
-        </div>
     </div>
 </template>
 

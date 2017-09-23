@@ -6,28 +6,55 @@
         <br>
         <b-card no-body>
             <b-tabs card>
-                <b-tab title="Attendees">
-                    <b-card title="Attendees">
-                        <b-table striped hover :items="session.attendees" :fields="fields_attendees">
-                            <template slot="first name" scope="item">
-                                {{item.first_name}}
-                            </template>
-                            <template slot="last name" scope="item">
-                                {{item.last_name}}
-                            </template>
-                            <template slot="user name" scope="item">
-                                {{item.username}}
-                            </template>
-                            <template slot="actions" scope="h">
-                                <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">present, click to remove</b-btn>
-                                <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">absent, click to add</b-btn>
-                            </template>
-                        </b-table>
+                <!-- <b-tab title="شرکت کنندگان">
+                                                                        <b-card>
+                                                                            <b-table striped hover :items="session.attendees" :fields="fields_attendees">
+                                                                                <template slot="first name" scope="item">
+                                                                                    {{item.first_name}}
+                                                                                </template>
+                                                                                <template slot="last name" scope="item">
+                                                                                    {{item.last_name}}
+                                                                                </template>
+                                                                                <template slot="user name" scope="item">
+                                                                                    {{item.username}}
+                                                                                </template>
+                                                                                <template slot="actions" scope="h">
+                                                                                    <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">حاضر، اعلام غیبت</b-btn>
+                                                                                    <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">غایب، اعلام حضور</b-btn>
+                                                                                </template>
+                                                                            </b-table>
+                                                                        </b-card>
+                                                                    </b-tab> -->
+
+                <b-tab title="حاضران">
+                    <b-card :sub-title="selected_day_jalali">
+                        <div class="row">
+                            <div class="col-4">
+                                <b-form-select v-model="selected_day" :options="date_options" class="mb-3" :select-size="Math.min(date_options.length, 20)" @input="load" />
+                            </div>
+                            <div class="col-8">
+                                <div v-if="loading">Loading... </div>
+                                <b-table v-else striped hover :items="session.attendees" :fields="fields_attendees">
+                                    <template slot="first name" scope="item">
+                                        {{item.first_name}}
+                                    </template>
+                                    <template slot="last name" scope="item">
+                                        {{item.last_name}}
+                                    </template>
+                                    <template slot="user name" scope="item">
+                                        {{item.username}}
+                                    </template>
+                                    <template slot="actions" scope="h">
+                                        <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">حاضر، اعلام غیبت</b-btn>
+                                        <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">غایب، اعلام حضور</b-btn>
+                                    </template>
+                                </b-table>
+                            </div>
+                        </div>
                     </b-card>
                 </b-tab>
-
-                <b-tab title="Times">
-                    <b-card title="Times">
+                <b-tab title="زمان ها">
+                    <b-card>
                         <b-table striped hover :items="session.times" :fields="fields_times">
                             <template slot="day" scope="row">
                                 {{daysOfWeek[row.value]}}
@@ -42,8 +69,8 @@
                     </b-card>
                 </b-tab>
 
-                <b-tab title="Devices">
-                    <b-card title="Devices">
+                <b-tab title="دستگاه ها">
+                    <b-card>
                         <b-table striped hover :items="session.devices" :fields="fields_devices">
                             <template slot="device name" scope="item">
                                 {{item.name}}
@@ -51,8 +78,8 @@
                         </b-table>
                     </b-card>
                 </b-tab>
-                <b-tab title="Logs">
-                    <b-card title="Logs">
+                <b-tab title="سوابق">
+                    <b-card>
                         <b-table striped hover :sort-desc.sync="sortDesc" :items="logs" :fields="fields_logs">
                             <template slot="action type" scope="item">
                                 {{item.type}}
@@ -67,34 +94,6 @@
                                 {{new Date(item.timestamps).getDay()}}
                             </template>
                         </b-table>
-                    </b-card>
-                </b-tab>
-                <b-tab title="Attended">
-                    <b-card title="Attended" :sub-title="selected_day_jalali">
-                        <div class="row">
-                            <div class="col-4">
-                                <b-form-select v-model="selected_day" :options="date_options" class="mb-3" :select-size="4" @input="load" />
-                            </div>
-                            <div class="col-8">
-                                <div v-if="loading">Loading... </div>
-                                <b-table v-else striped hover :items="attended" :fields="fields_attendees">
-                                    <template slot="first name" scope="item">
-                                        {{item.first_name}}
-                                    </template>
-                                    <template slot="last name" scope="item">
-                                        {{item.last_name}}
-                                    </template>
-                                    <template slot="user name" scope="item">
-                                        {{item.username}}
-                                    </template>
-                                    <template slot="actions" scope="h">
-                                        <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">present, click to remove</b-btn>
-                                        <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">absent, click to add</b-btn>
-                                    </template>
-                                </b-table>
-                            </div>
-                        </div>
-
                     </b-card>
                 </b-tab>
             </b-tabs>
@@ -115,20 +114,21 @@ export default {
         return {
             attendees: '',
             devices: '',
-            daysOfWeek: ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
             logs: [],
             sortDesc: false,
             session: {},
             logs: [],
             currentDate: new Date(),
             days: [],
-            selected_day: new Date(),
+            selected_day: null,
             loading: false,
         }
     },
     computed: {
+        daysOfWeek: () => ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
+
         selected_day_jalali() {
-            return jalaali(this.selected_day)
+            return this.selected_day ? jalaali(this.selected_day) : '?'
         },
         date_options() {
             return this.days.map(date => ({
@@ -138,47 +138,48 @@ export default {
         },
         fields_attendees: () => ({
             first_name: {
-                label: 'first name',
+                label: 'نام',
             },
             last_name: {
-                label: 'last name',
+                label: 'نام خانوادگی',
             },
             username: {
-                label: 'user name ',
+                label: 'نام کاربری',
             },
             actions: {
-                label: 'presnt'
+                label: 'حاضر بودن'
             }
         }),
         fields_devices: () => ({
             name: {
-                label: 'device name'
+                label: 'نام دستگاه'
             }
         }),
-        fields_times: () => ({
-            day: {
-                label: 'day'
-            },
-            from: {
-                label: 'from'
-            },
-            to: {
-                label: 'to'
+        fields_times() {
+            return {
+                day: {
+                    label: 'روز',
+                    formatter: (value, key, item) => value // this.daysOfWeek[value]
+                },
+                time: {
+                    label: 'زمان برگزاری',
+                    formatter: (value, key, item) => item.from + '-' + item.to
+                }
             }
-        }),
+        },
         fields_logs: () => ({
             type: {
-                label: 'action type',
+                label: 'نوع',
             },
             device: {
-                label: 'device id',
+                label: 'دستگاه',
             },
             user: {
-                label: 'Username',
+                label: 'نام کاربری',
                 formatter: u => u.username
             },
             timestamps: {
-                label: 'time',
+                label: 'زمان',
                 formatter: t => t.createdAt,
                 sortable: true,
             }
@@ -225,9 +226,15 @@ export default {
         },
         async load() {
             this.loading = true
+
             this.session = await this.$axios.$get('sessions/' + this.$route.params.id + '/detail')
-            this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day)
+
             this.days = await this.$axios.$get('sessions/' + this.$route.params.id + '/days')
+            if (!this.selected_day) {
+                this.selected_day = this.days[0]
+            }
+
+            this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day)
             this.loading = false
         },
         findLogID(user, sessionID) {
