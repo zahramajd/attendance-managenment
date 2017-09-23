@@ -6,7 +6,6 @@
             </template>
             <template slot="actions" scope="item">
                 <b-button-group>
-
                     <b-btn size="sm" :to="'/session/' +  item.item._id + '/view'">view</b-btn>
                     <b-btn size="sm" :to="'/session/' +  item.item._id + '/edit'">edit</b-btn>
                 </b-button-group>

@@ -133,7 +133,8 @@ app.post('/api/users/new', async (req, res) => {
   var user = new User({
     first_name: req.body.first_name,
     last_name: req.body.last_name,
-    username: req.body.username
+    username: req.body.username,
+    password: req.body.password
   });
 
   await user.save()
@@ -152,6 +153,19 @@ app.get('/api/users', async (req, res) => {
 // /api/editusers : edit users
 // -------------------------------- 
 app.post('/api/users/:userID/edit', async (req, res) => {
+
+  let user = await User.findById(req.params.userID)
+  user.first_name = req.body.first_name
+  user.last_name = req.body.last_name
+  user.username = req.body.username
+  user.password = req.body.password
+
+  await user.save()
+})
+// --------------------------------
+// /api/editusers : add manager
+// -------------------------------- 
+app.post('/api/users/:userID/add_manager', async (req, res) => {
 
   let user = await User.findById(req.params.userID)
   user.managerOf.push(req.body._id)

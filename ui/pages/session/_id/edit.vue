@@ -82,16 +82,16 @@
                         </b-modal>
                     </b-card>
                     <!-- <b-table striped hover :items="" :fields="">
-                                                                                                                                                                                                                                                                <template slot="first name" scope="item">
-                                                                                                                                                                                                                                                                    {{item.first_name}}
-                                                                                                                                                                                                                                                                </template>
-                                                                                                                                                                                                                                                                <template slot="last name" scope="item">
-                                                                                                                                                                                                                                                                    {{item.last_name}}
-                                                                                                                                                                                                                                                                </template>
-                                                                                                                                                                                                                                                                <template slot="user name" scope="item">
-                                                                                                                                                                                                                                                                    {{item.username}}
-                                                                                                                                                                                                                                                                </template>
-                                                                                                                                                                                                                                                            </b-table> -->
+                                                                                                                                                                                                                                                                        <template slot="first name" scope="item">
+                                                                                                                                                                                                                                                                            {{item.first_name}}
+                                                                                                                                                                                                                                                                        </template>
+                                                                                                                                                                                                                                                                        <template slot="last name" scope="item">
+                                                                                                                                                                                                                                                                            {{item.last_name}}
+                                                                                                                                                                                                                                                                        </template>
+                                                                                                                                                                                                                                                                        <template slot="user name" scope="item">
+                                                                                                                                                                                                                                                                            {{item.username}}
+                                                                                                                                                                                                                                                                        </template>
+                                                                                                                                                                                                                                                                    </b-table> -->
 
                 </b-tab>
                 <b-tab title="Date">
@@ -256,8 +256,7 @@ export default {
             await this.$axios.post('/sessions/' + this.$route.params.id + '/edit', this.session)
         },
         async submit_manager() {
-            await console.log("manager")
-            await this.$axios.post('/users/' + this.add_manager + '/edit', this.session)
+            await this.$axios.post('/users/' + this.add_manager + '/add_manager', this.session)
 
         },
         async submit_date() {
