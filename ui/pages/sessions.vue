@@ -43,7 +43,8 @@ export default {
     },
     methods: {
         async getSessions() {
-            this.sessions = (await this.$axios.get('sessions')).data
+            //  this.sessions = (await this.$axios.get('sessions')).data
+            this.sessions = (await this.$axios.get('user/' + this.$store.state.user._id + '/manager-of')).data.managerOf
         },
         async newSession() {
             await this.$axios.post('sessions/new', {
