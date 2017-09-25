@@ -20,6 +20,12 @@ export default {
     accessDevices({ user }) {
       return user.scope.includes('admin')
     },
+    editSessions({ user }) {
+      return user.scope.includes('admin')
+    },
+    viewSessions({ user }) {
+      return user.scope.includes('admin') || user.scope.includes('manager')
+    },
   },
   mutations: {
     SET_USER(state, user) {
