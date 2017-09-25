@@ -7,24 +7,24 @@
         <b-card no-body>
             <b-tabs card>
                 <!-- <b-tab title="شرکت کنندگان">
-                                                                        <b-card>
-                                                                            <b-table striped hover :items="session.attendees" :fields="fields_attendees">
-                                                                                <template slot="first name" scope="item">
-                                                                                    {{item.first_name}}
-                                                                                </template>
-                                                                                <template slot="last name" scope="item">
-                                                                                    {{item.last_name}}
-                                                                                </template>
-                                                                                <template slot="user name" scope="item">
-                                                                                    {{item.username}}
-                                                                                </template>
-                                                                                <template slot="actions" scope="h">
-                                                                                    <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">حاضر، اعلام غیبت</b-btn>
-                                                                                    <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">غایب، اعلام حضور</b-btn>
-                                                                                </template>
-                                                                            </b-table>
-                                                                        </b-card>
-                                                                    </b-tab> -->
+                                                                            <b-card>
+                                                                                <b-table striped hover :items="session.attendees" :fields="fields_attendees">
+                                                                                    <template slot="first name" scope="item">
+                                                                                        {{item.first_name}}
+                                                                                    </template>
+                                                                                    <template slot="last name" scope="item">
+                                                                                        {{item.last_name}}
+                                                                                    </template>
+                                                                                    <template slot="user name" scope="item">
+                                                                                        {{item.username}}
+                                                                                    </template>
+                                                                                    <template slot="actions" scope="h">
+                                                                                        <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">حاضر، اعلام غیبت</b-btn>
+                                                                                        <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">غایب، اعلام حضور</b-btn>
+                                                                                    </template>
+                                                                                </b-table>
+                                                                            </b-card>
+                                                                        </b-tab> -->
 
                 <b-tab title="حاضران">
                     <b-card :sub-title="selected_day_jalali">
@@ -69,7 +69,7 @@
                     </b-card>
                 </b-tab>
 
-                <b-tab title="دستگاه ها">
+                <b-tab title="دستگاه ها" v-if="$store.getters.accessDevices">
                     <b-card>
                         <b-table striped hover :items="session.devices" :fields="fields_devices">
                             <template slot="device name" scope="item">
