@@ -1,30 +1,30 @@
 export default {
   state: () => ({
     user: {
-      scopes: []
+      roles: []
     }
   }),
   getters: {
-    is({ user: { scopes: [] } }) {
-      return scopes => scopes.includes(scope)
+    is({ user: { roles: [] } }) {
+      return roles => roles.includes(role)
     },
     accessLogs({ user }) {
-      return user.scope.includes('admin')
+      return user.role.includes('admin')
     },
     accessSessions({ user }) {
-      return user.scope.includes('admin') || user.scope.includes('manager')
+      return user.role.includes('admin') || user.role.includes('manager')
     },
     accessUsers({ user }) {
-      return user.scope.includes('admin') || user.scope.includes('manager')
+      return user.role.includes('admin')
     },
     accessDevices({ user }) {
-      return user.scope.includes('admin')
+      return user.role.includes('admin')
     },
     editSessions({ user }) {
-      return user.scope.includes('admin')
+      return user.role.includes('admin')
     },
     viewSessions({ user }) {
-      return user.scope.includes('admin') || user.scope.includes('manager')
+      return user.role.includes('admin') || user.role.includes('manager')
     },
   },
   mutations: {
