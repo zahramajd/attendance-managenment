@@ -30,7 +30,6 @@ export default {
     middleware: 'auth',
     data() {
         return {
-            pets: [],
             text: '',
             device_name: '',
             first_name: '',
@@ -38,13 +37,7 @@ export default {
             username: ''
         }
     },
-    mounted() {
-        this.getPets()
-    },
     methods: {
-        async getPets() {
-            this.pets = (await this.$axios.get('pets')).data
-        },
         async newDev() {
             await this.$axios.post('new_dev', {
                 name: this.device_name

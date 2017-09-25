@@ -29,7 +29,8 @@ const User = mongoose.model('User', {
   managerOf: [{
     type: Schema.Types.ObjectId,
     ref: 'Session'
-  }]
+  }],
+  scope: [String]
 });
 
 const Session = mongoose.model('Session', {

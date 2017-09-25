@@ -8,10 +8,10 @@
 
       <b-nav is-nav-bar>
         <b-nav-item to="/">Home</b-nav-item>
-        <b-nav-item to="/users">Users</b-nav-item>
-        <b-nav-item to="/sessions">Sessions</b-nav-item>
-        <b-nav-item to="/devices">Devices</b-nav-item>
-        <b-nav-item to="/logs">Log</b-nav-item>
+        <b-nav-item to="/users" v-if="$store.getters.accessUsers">Users</b-nav-item>
+        <b-nav-item to="/sessions" v-if="$store.getters.accessSessions">Sessions</b-nav-item>
+        <b-nav-item to="/devices" v-if="$store.getters.accessDevices">Devices</b-nav-item>
+        <b-nav-item to="/logs" v-if="$store.getters.accessLogs">Log</b-nav-item>
       </b-nav>
 
       <b-nav is-nav-bar class="ml-auto">
