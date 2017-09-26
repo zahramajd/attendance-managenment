@@ -273,12 +273,22 @@ app.get('/api/logs', async (req, res) => {
 // /api/sessions/new : Creates new Session
 // ----------------------------------------
 app.post('/api/sessions/new', async (req, res) => {
-  var session = new Session({
-    name: req.body.name,
-  });
-  await session.save()
-  res.end('new session has been added')
 
+  let result = false
+  let sessions = await Session.find({
+    name: req.body.name
+  })
+
+  if (sessions.length == 0) {
+    result = true
+    let session = new Session({
+      name: req.body.name,
+    });
+    await session.save()
+  }
+  res.json({
+    result: result
+  })
 })
 // ----------------------------------
 // /api/sessions : List all sessions

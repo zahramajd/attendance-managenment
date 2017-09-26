@@ -52,10 +52,11 @@ export default {
             if (this.name == '')
                 this.no_input_alert = true
             else {
-                await this.$axios.post('sessions/new', {
+                let res = await this.$axios.post('sessions/new', {
                     name: this.name,
                 })
                 await this.getSessions()
+                console.log('in ui', res)
             }
 
         },
