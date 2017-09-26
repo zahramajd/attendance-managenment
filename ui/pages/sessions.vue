@@ -13,6 +13,7 @@
         </b-table>
         <div class="col-lg-6">
             <br>
+            <b-alert variant="secondary" dismissible :show="no_input_alert">نام درس را وارد کنید</b-alert>
             <b-form-input v-model="name" type="text" placeholder="نام درس"></b-form-input>
             <br>
 
@@ -36,6 +37,7 @@ export default {
                     label: 'عملیات'
                 }
             },
+            no_input_alert: false
         }
     },
     async mounted() {
@@ -47,10 +49,15 @@ export default {
             this.sessions = (await this.$axios.get('user/' + this.$store.state.user._id + '/manager-of')).data.managerOf
         },
         async newSession() {
-            await this.$axios.post('sessions/new', {
-                name: this.name,
-            })
-            await this.getSessions()
+            if (this.name == '')
+                this.no_input_alert = true
+            else {
+                await this.$axios.post('sessions/new', {
+                    name: this.name,
+                })
+                await this.getSessions()
+            }
+
         },
     }
 }

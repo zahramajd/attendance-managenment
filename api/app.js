@@ -333,7 +333,6 @@ app.post('/api/sessions/:sessionID/edit', async (req, res) => {
 // /api/manager-of/:userID : get managerOf
 // -----------------------------------------
 app.get('/api/user/:userID/manager-of', async (req, res) => {
-  console.log('in api')
   let user = await User.findById(req.params.userID).populate('managerOf')
   res.json(user)
 })
