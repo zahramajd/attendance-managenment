@@ -30,7 +30,7 @@ const User = mongoose.model('User', {
     type: Schema.Types.ObjectId,
     ref: 'Session'
   }],
-  scope: [String]
+  role: [String]
 });
 
 const Session = mongoose.model('Session', {

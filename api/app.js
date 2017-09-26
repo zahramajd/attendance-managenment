@@ -165,9 +165,9 @@ app.post('/api/users/:userID/edit', async (req, res) => {
 // --------------------------------
 // /api/editusers : add manager
 // -------------------------------- 
-app.post('/api/users/:userID/add_manager', async (req, res) => {
+app.post('/api/users/add_manager', async (req, res) => {
 
-  let user = await User.findById(req.params.userID)
+  let user = await User.findById(req.user._id)
   user.managerOf.push(req.body._id)
 
   await user.save()
@@ -330,11 +330,20 @@ app.post('/api/sessions/:sessionID/edit', async (req, res) => {
 
 
 // ----------------------------------------
-// /api/manager-of/:userID : get managerOf
+// /api/manager-of/ : get managerOf
 // -----------------------------------------
-app.get('/api/user/:userID/manager-of', async (req, res) => {
-  let user = await User.findById(req.params.userID).populate('managerOf')
-  res.json(user)
+app.get('/api/user/manager-of', async (req, res) => {
+  let q = {}
+
+  if (req.user.role.indexOf('admin') === -1) {
+    q._id = { $in: req.user.managerOf }
+  }
+
+  let sessions = await Session.find(q)
+
+  res.json({
+    sessions
+  })
 })
 
 // -----------------------------------------------------------------------------
