@@ -95,14 +95,24 @@ app.post('/api/login', (req, res, next) => {
 // -------------------------------------
 app.post('/api/devices/new', async (req, res) => {
 
-  let secret = otplib.authenticator.generateSecret();
-  var dev = new Device({
+  let result = false
+  let devices = await Device.find({
     name: req.body.name,
-    secret: secret
-  });
+  })
 
-  await dev.save()
-  res.end('new device has been added')
+  if (devices.length == 0) {
+    result = true
+    let secret = otplib.authenticator.generateSecret();
+    var dev = new Device({
+      name: req.body.name,
+      secret: secret
+    });
+
+    await dev.save()
+  }
+  res.json({
+    result: result
+  })
 
 })
 // --------------------------------
@@ -130,16 +140,26 @@ app.get('/api/devices', async (req, res) => {
 // /api/new_user : Creates new User
 // --------------------------------
 app.post('/api/users/new', async (req, res) => {
-  var user = new User({
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
+
+  let result = false
+  let users = await User.find({
     username: req.body.username,
-    password: req.body.password
-  });
+  })
 
-  await user.save()
-  res.end('new user has been added')
+  if (users.length == 0) {
+    result = true
+    var user = new User({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      username: req.body.username,
+      password: req.body.password
+    });
 
+    await user.save()
+  }
+  res.json({
+    result: result
+  })
 })
 // --------------------------------
 // /api/users : List all users
@@ -463,4 +483,3 @@ app.post('/api/client', async (req, res) => {
 
   console.log(req.body.qr)
 })
-

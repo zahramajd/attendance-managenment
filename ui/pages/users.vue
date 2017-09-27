@@ -38,6 +38,8 @@
         <div class="col-lg-6">
             <br>
             <b-alert variant="secondary" dismissible :show="no_input_alert">مشخصات کاربر را وارد کنید</b-alert>
+            <b-alert variant="secondary" dismissible :show="showWarn">این کاربر وجود دارد</b-alert>
+
             <b-form-input v-model="first_name" type="text" placeholder="نام"></b-form-input>
             <br>
 
@@ -88,7 +90,8 @@ export default {
             edit_last_name: '',
             edit_username: '',
             edit_password: '',
-            no_input_alert: false
+            no_input_alert: false,
+            showWarn: false,
         }
     },
     async mounted() {
@@ -99,16 +102,20 @@ export default {
             this.users = (await this.$axios.get('users')).data
         },
         async newUser() {
+            this.showWarn = false
+
             if (this.first_name == '' || this.last_name == '' || this.username == '' || this.password == '')
                 this.no_input_alert = true
             else {
-                await this.$axios.post('users/new', {
+                const res = await this.$axios.post('users/new', {
                     first_name: this.first_name,
                     last_name: this.last_name,
                     username: this.username,
                     password: this.password
                 })
                 await this.getUsers()
+                if (res.data.result == false)
+                    this.showWarn = true
             }
         },
         editUser(item) {

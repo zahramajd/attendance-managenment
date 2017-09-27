@@ -14,6 +14,7 @@
         <div class="col-lg-6">
             <br>
             <b-alert variant="secondary" dismissible :show="no_input_alert">نام درس را وارد کنید</b-alert>
+            <b-alert variant="secondary" dismissible :show="showWarn">این درس وجود دارد</b-alert>
             <b-form-input v-model="name" type="text" placeholder="نام درس"></b-form-input>
             <br>
 
@@ -37,7 +38,8 @@ export default {
                     label: 'عملیات'
                 }
             },
-            no_input_alert: false
+            no_input_alert: false,
+            showWarn: false
         }
     },
     async mounted() {
@@ -49,14 +51,16 @@ export default {
             this.sessions = (await this.$axios.$get('user/manager-of')).sessions
         },
         async newSession() {
+            this.showWarn = false
             if (this.name == '')
                 this.no_input_alert = true
             else {
-                let res = await this.$axios.post('sessions/new', {
+                const res = await this.$axios.post('sessions/new', {
                     name: this.name,
                 })
                 await this.getSessions()
-                console.log('in ui', res)
+                if (res.data.result == false)
+                    this.showWarn = true
             }
 
         },
