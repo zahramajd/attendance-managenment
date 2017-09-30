@@ -4,7 +4,6 @@ const { totpToken } = require('otplib/core')
 const crypto = require('crypto')
 
 
-
 mongoose.Promise = Promise
 mongoose.connect('mongodb://localhost/test', {
   useMongoClient: true,
@@ -76,9 +75,25 @@ const Log = mongoose.model('Log', {
   }
 })
 
+
+const Audit = mongoose.model('Audit', {
+  devID: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    // will remove after 6 min
+    expires: 360
+  }
+})
+
 module.exports = {
   Device,
   User,
   Session,
-  Log
+  Log,
+  Audit
 }

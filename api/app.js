@@ -15,7 +15,8 @@ const {
   Device,
   User,
   Session,
-  Log
+  Log,
+  Audit
 } = require('./db')
 
 const app = module.exports = express()
@@ -185,9 +186,9 @@ app.post('/api/users/:userID/edit', async (req, res) => {
 // --------------------------------
 // /api/editusers : add manager
 // -------------------------------- 
-app.post('/api/users/add_manager', async (req, res) => {
+app.post('/api/users/:userID/add_manager', async (req, res) => {
 
-  let user = await User.findById(req.user._id)
+  let user = await User.findById(req.params.userID)
   user.managerOf.push(req.body._id)
 
   await user.save()
@@ -200,10 +201,22 @@ app.post('/api/otp/verify', async (req, res) => {
 
   const {
     username,
-    otp
+    otp,
+    devID
   } = req.body;
 
   console.log('in verify', username, otp)
+
+  let audits = await Audit.find({
+    devID: devID,
+  })
+
+  if (audits.length !== 0) {
+    return res.json({
+      error: 'It seems you have already checked in with this device'
+    })
+  }
+
 
   let devices = await Device.find({})
   let device = devices.find(d => d.otp === otp)
@@ -254,10 +267,7 @@ app.post('/api/otp/verify', async (req, res) => {
     })
   }
 
-
   let session = await getSession(Date.now(), device._id, userID._id)
-
-
 
   if (!session) {
     return res.json({
@@ -275,6 +285,12 @@ app.post('/api/otp/verify', async (req, res) => {
 
     await log.save()
 
+    var audit = new Audit({
+      devID: devID,
+      user: userID
+    })
+
+    await audit.save()
     return res.json({
       device
     })
