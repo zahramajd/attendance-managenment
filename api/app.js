@@ -200,12 +200,12 @@ app.post('/api/users/:userID/add_manager', async (req, res) => {
 app.post('/api/otp/verify', async (req, res) => {
 
   const {
-    username,
     otp,
     devID
   } = req.body;
 
-  console.log('in verify', username, otp)
+  console.log('in verify', req.user.username, otp)
+  console.log('user in API', req.user.username)
 
   let audits = await Audit.find({
     devID: devID,
@@ -260,7 +260,7 @@ app.post('/api/otp/verify', async (req, res) => {
     return session
   }
 
-  let userID = await getUserID(username)
+  let userID = await getUserID(req.user.username)
   if (!userID) {
     return res.json({
       error: 'The user does not exist'
