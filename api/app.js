@@ -205,7 +205,6 @@ app.post('/api/otp/verify', async (req, res) => {
   } = req.body;
 
   console.log('in verify', req.user.username, otp)
-  console.log('user in API', req.user.username)
 
   let audits = await Audit.find({
     devID: devID,
@@ -395,9 +394,9 @@ app.get('/api/user/manager-of', async (req, res) => {
 // -----------------------------------------------------------------------------
 // /api/logs/sessionID/:date : List logs of a certain session at a certain time
 // -----------------------------------------------------------------------------
-app.get('/api/logs/:sessionID/:date', async (req, res) => {
+app.get('/api/logs/:sessionID/date/:date', async (req, res) => {
 
-  console.log('date: ', req.params.date)
+  //console.log('date: ', req.params.date)
   let date = moment(new Date(req.params.date))
   let logs = await Log.find({
     session: req.params.sessionID,
@@ -498,4 +497,60 @@ app.get('/api/ip', async (req, res) => {
 app.post('/api/client', async (req, res) => {
 
   console.log(req.body.qr)
+})
+
+// -----------------------------------------------------------------------------
+// /api/logs/sessionID/:date/chart_per_session : 
+// -----------------------------------------------------------------------------
+app.get('/api/logs/:sessionID/:date/chart_per_session', async (req, res) => {
+
+  let date = moment(new Date(req.params.date))
+  let logs = await Log.find({
+    session: req.params.sessionID,
+    'timestamps.createdAt': {
+      $gte: date.clone().startOf('day'),
+      $lt: date.clone().endOf('day')
+    }
+  }).sort({
+    'timestamps': 'desc'
+  }).populate('user')
+
+  let current_session = await Session.findById(req.params.sessionID)
+  let total_attendees = current_session.attendees
+
+  res.json({
+    total: total_attendees.length,
+    present: logs.length
+  })
+})
+
+// -----------------------------------------------------------------------------
+// /api/logs/sessionID/chart_per_term : 
+// -----------------------------------------------------------------------------
+app.get('/api/logs/:sessionID/chart_per_term', async (req, res) => {
+
+  let session = await Session.findById(req.params.sessionID)
+  let logs_of_session = await Log.find({
+    session: req.params.sessionID
+  }).populate('session')
+
+  let start = moment(new Date(session.start_date)).clone()
+  let end = moment(Date.now())
+
+  let num_of_present_in_day = [0]
+  temp = start.clone()
+
+  for (let day = 0; temp.isSameOrBefore(end); temp.add(1, 'days'), day++) {
+    num_of_present_in_day[day] = 0
+    logs_of_session.forEach(el => {
+      let diff = temp.diff(moment(el.timestamps.createdAt), 'days', true)
+      if (diff < 1 && diff > -1) {
+        num_of_present_in_day[day]++
+      }
+    })
+  }
+
+  res.json({
+    num_of_present_in_day
+  })
 })

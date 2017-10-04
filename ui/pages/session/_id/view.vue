@@ -7,24 +7,24 @@
         <b-card no-body>
             <b-tabs card>
                 <!-- <b-tab title="شرکت کنندگان">
-                                                                            <b-card>
-                                                                                <b-table striped hover :items="session.attendees" :fields="fields_attendees">
-                                                                                    <template slot="first name" scope="item">
-                                                                                        {{item.first_name}}
-                                                                                    </template>
-                                                                                    <template slot="last name" scope="item">
-                                                                                        {{item.last_name}}
-                                                                                    </template>
-                                                                                    <template slot="user name" scope="item">
-                                                                                        {{item.username}}
-                                                                                    </template>
-                                                                                    <template slot="actions" scope="h">
-                                                                                        <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">حاضر، اعلام غیبت</b-btn>
-                                                                                        <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">غایب، اعلام حضور</b-btn>
-                                                                                    </template>
-                                                                                </b-table>
-                                                                            </b-card>
-                                                                        </b-tab> -->
+                                                                                                                                                        <b-card>
+                                                                                                                                                            <b-table striped hover :items="session.attendees" :fields="fields_attendees">
+                                                                                                                                                                <template slot="first name" scope="item">
+                                                                                                                                                                    {{item.first_name}}
+                                                                                                                                                                </template>
+                                                                                                                                                                <template slot="last name" scope="item">
+                                                                                                                                                                    {{item.last_name}}
+                                                                                                                                                                </template>
+                                                                                                                                                                <template slot="user name" scope="item">
+                                                                                                                                                                    {{item.username}}
+                                                                                                                                                                </template>
+                                                                                                                                                                <template slot="actions" scope="h">
+                                                                                                                                                                    <b-btn size="sm" variant="success" v-if="isPresent(h.item)" @click="removeAttendee(h.item)">حاضر، اعلام غیبت</b-btn>
+                                                                                                                                                                    <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">غایب، اعلام حضور</b-btn>
+                                                                                                                                                                </template>
+                                                                                                                                                            </b-table>
+                                                                                                                                                        </b-card>
+                                                                                                                                                    </b-tab> -->
 
                 <b-tab title="حاضران">
                     <b-card :sub-title="selected_day_jalali">
@@ -94,6 +94,11 @@
                                 {{new Date(item.timestamps).getDay()}}
                             </template>
                         </b-table>
+                    </b-card>
+                </b-tab>
+                <b-tab title="نمودارها">
+                    <b-card>
+
                     </b-card>
                 </b-tab>
             </b-tabs>
@@ -234,7 +239,10 @@ export default {
                 this.selected_day = this.days[0]
             }
 
-            this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day)
+            this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/date/' + this.selected_day)
+            let chart_data = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day + '/chart_per_session')
+            let charta = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_per_term')
+
             this.loading = false
         },
         findLogID(user, sessionID) {
