@@ -29,6 +29,7 @@
                                         <b-btn size="sm" variant="danger" v-if="!isPresent(h.item)" @click="presentAttendee(h.item)">غایب، اعلام حضور</b-btn>
                                     </template>
                                 </b-table>
+                                <pie-chart :chart-data="chartPerSession" :width="400" :height="200" />
                             </div>
                         </div>
                     </b-card>
@@ -78,7 +79,7 @@
                 </b-tab>
                 <b-tab title="نمودارها">
                     <b-card>
-                        <pie-chart :data="{pie_data}"></pie-chart>
+                        <bar-chart :chart-data="chartPerTerm" :width="400" :height="200" />
                     </b-card>
                 </b-tab>
             </b-tabs>
@@ -88,8 +89,6 @@
 
 <script>
 import moment from 'moment-jalaali'
-import { Pie } from 'vue-chartjs'
-
 
 moment.loadPersian()
 
@@ -109,21 +108,37 @@ export default {
             days: [],
             selected_day: null,
             loading: false,
-            pie_data: {
-                datasets: [{
-                    data: [10, 20, 30]
-                }],
-                labels: [
-                    'Red',
-                    'Yellow',
-                    'Blue'
-                ]
-            }
+            chart_per_term: [],
+            chart_per_session: []
         }
     },
     computed: {
         daysOfWeek: () => ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
 
+        chartPerTerm() {
+            return ({
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40'],
+                datasets: [
+                    {
+                        label: 'term history',
+                        backgroundColor: '#f87979',
+                        data: this.chart_per_term.num_of_present_in_day
+                    }
+                ]
+            })
+        },
+        chartPerSession() {
+            return ({
+                labels: ['present', 'absent'],
+                datasets: [
+                    {
+                        label: 'session history',
+                        backgroundColor: ['#ff6384', '#36a2eb'],
+                        data: [this.chart_per_session.present, (this.chart_per_session.total - this.chart_per_session.present)]
+                    }
+                ]
+            })
+        },
         selected_day_jalali() {
             return this.selected_day ? jalaali(this.selected_day) : '?'
         },
@@ -232,8 +247,8 @@ export default {
             }
 
             this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/date/' + this.selected_day)
-            let chart_data = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day + '/chart_per_session')
-            let charta = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_per_term')
+            this.chart_per_session = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day + '/chart_per_session')
+            this.chart_per_term = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_per_term')
 
             this.loading = false
         },
@@ -252,10 +267,4 @@ export default {
 
 }
 
-Pie.extend({
-    mounted() {
-        // Overwriting base render method with actual data.
-        this.renderChart(this.pie_data, { responsive: true, maintainAspectRatio: false })
-    }
-})
 </script>

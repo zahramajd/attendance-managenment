@@ -24,5 +24,8 @@ module.exports = {
   ],
   proxy: [
     'http://localhost:4000/api'
+  ],
+  plugins: [
+    '~/plugins/chart'
   ]
 }

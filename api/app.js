@@ -549,7 +549,6 @@ app.get('/api/logs/:sessionID/chart_per_term', async (req, res) => {
       }
     })
   }
-
   res.json({
     num_of_present_in_day
   })
