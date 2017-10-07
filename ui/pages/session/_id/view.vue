@@ -49,7 +49,6 @@
                         </b-table>
                     </b-card>
                 </b-tab>
-
                 <b-tab title="دستگاه ها" v-if="$store.getters.accessDevices">
                     <b-card>
                         <b-table striped hover :items="session.devices" :fields="fields_devices">
@@ -121,7 +120,9 @@ export default {
             days: [],
             selected_day: null,
             loading: false,
-            chart_per_term: [],
+            chart_per_term: {
+                num_of_present_in_day: []
+            },
             chart_per_session: {},
             chart_for_student: {},
             selected_student: null,
@@ -131,13 +132,15 @@ export default {
         daysOfWeek: () => ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'],
 
         chartPerTerm() {
+            let label_of_session = []
+            for (let i = 0; i < this.chart_per_term.num_of_present_in_day.length; i++)
+                label_of_session[i] = i + 1
             return ({
-                //TODO: get the labels
-                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40'],
+                labels: label_of_session,
                 datasets: [
                     {
                         label: 'term history',
-                        backgroundColor: '#f87979',
+                        backgroundColor: '#30A54A',
                         data: this.chart_per_term.num_of_present_in_day
                     }
                 ]
@@ -150,7 +153,7 @@ export default {
                     {
                         label: 'session history',
                         backgroundColor: ['#30A54A', '#DA3849'],
-                        data: [this.chart_per_session.present, (this.chart_per_session.total - this.chart_per_session.present)]
+                        data: [Math.round((this.chart_per_session.present) * 100 / this.chart_per_session.total), Math.round((this.chart_per_session.total - this.chart_per_session.present) * 100 / this.chart_per_session.total)]
                     }
                 ]
             })
@@ -162,7 +165,7 @@ export default {
                     {
                         label: 'student history',
                         backgroundColor: ['#30A54A', '#DA3849'],
-                        data: [this.chart_for_student.present, (this.chart_for_student.total - this.chart_for_student.present)]
+                        data: [Math.round(this.chart_for_student.present * 100 / this.chart_for_student.total), Math.round((this.chart_for_student.total - this.chart_for_student.present) * 100 / this.chart_for_student.total)]
                     }
                 ]
             })
