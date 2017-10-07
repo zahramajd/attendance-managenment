@@ -553,3 +553,38 @@ app.get('/api/logs/:sessionID/chart_per_term', async (req, res) => {
     num_of_present_in_day
   })
 })
+
+// -----------------------------------------------------------------------------
+// /api/logs/sessionID/chart_for_student : 
+// -----------------------------------------------------------------------------
+app.get('/api/logs/:sessionID/chart_for_student/:userID', async (req, res) => {
+
+  let logs_of_student = await Log.find({
+    session: req.params.sessionID,
+    user: req.params.userID
+  }).populate('user')
+
+  let session = await Session.findById(req.params.sessionID)
+  let times_days = session.times.map(function (a) {
+    return a.day;
+  })
+
+  let start = moment(new Date(session.start_date)).clone()
+  let end = moment(new Date(session.end_date)).clone()
+
+  let daysOfSession = []
+  temp = start.clone()
+
+  while (temp.isSameOrBefore(end)) {
+    dayOfWeek = temp.weekday()
+    if (times_days.indexOf(dayOfWeek) > -1) {
+      daysOfSession.push(temp)
+    }
+    temp = temp.clone().add(1, 'days')
+  }
+
+  res.json({
+    num_of_presence: logs_of_student.length,
+    num_of_total: daysOfSession.length
+  })
+})

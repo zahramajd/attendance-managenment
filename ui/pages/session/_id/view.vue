@@ -117,6 +117,7 @@ export default {
 
         chartPerTerm() {
             return ({
+                //TODO: get the labels
                 labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40'],
                 datasets: [
                     {
@@ -133,7 +134,7 @@ export default {
                 datasets: [
                     {
                         label: 'session history',
-                        backgroundColor: ['#ff6384', '#36a2eb'],
+                        backgroundColor: ['#30A54A', '#DA3849'],
                         data: [this.chart_per_session.present, (this.chart_per_session.total - this.chart_per_session.present)]
                     }
                 ]
@@ -249,7 +250,9 @@ export default {
             this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/date/' + this.selected_day)
             this.chart_per_session = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day + '/chart_per_session')
             this.chart_per_term = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_per_term')
+            let chart_for_student = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_for_student/' + '597a25b2cf9e820c56f7f72e')
 
+            console.log(chart_for_student)
             this.loading = false
         },
         findLogID(user, sessionID) {
