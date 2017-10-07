@@ -77,9 +77,21 @@
                         </b-table>
                     </b-card>
                 </b-tab>
-                <b-tab title="نمودارها">
+                <b-tab title="نمودار ترم">
                     <b-card>
                         <bar-chart :chart-data="chartPerTerm" :width="400" :height="200" />
+                    </b-card>
+                </b-tab>
+                <b-tab title="نمودار دانشجو">
+                    <b-card>
+                        <div class="row">
+                            <div class="col-4">
+                                <b-form-select v-model="selected_student" :options="student_options" class="mb-3" :select-size="Math.min(student_options.length, 20)" @input="load" />
+                            </div>
+                            <div class="col-8">
+                                <pie-chart :chart-data="chartForStudent" :width="400" :height="200" />
+                            </div>
+                        </div>
                     </b-card>
                 </b-tab>
             </b-tabs>
@@ -98,18 +110,21 @@ export default {
     middleware: 'auth',
     data() {
         return {
-            attendees: '',
             devices: '',
             logs: [],
             sortDesc: false,
-            session: {},
+            session: {
+                attendees: []
+            },
             logs: [],
             currentDate: new Date(),
             days: [],
             selected_day: null,
             loading: false,
             chart_per_term: [],
-            chart_per_session: []
+            chart_per_session: {},
+            chart_for_student: {},
+            selected_student: null,
         }
     },
     computed: {
@@ -140,6 +155,18 @@ export default {
                 ]
             })
         },
+        chartForStudent() {
+            return ({
+                labels: ['present', 'absent'],
+                datasets: [
+                    {
+                        label: 'student history',
+                        backgroundColor: ['#30A54A', '#DA3849'],
+                        data: [this.chart_for_student.present, (this.chart_for_student.total - this.chart_for_student.present)]
+                    }
+                ]
+            })
+        },
         selected_day_jalali() {
             return this.selected_day ? jalaali(this.selected_day) : '?'
         },
@@ -147,6 +174,12 @@ export default {
             return this.days.map(date => ({
                 text: jalaali(date),
                 value: date
+            }))
+        },
+        student_options() {
+            return this.session.attendees.map(user => ({
+                text: user.first_name + ' ' + user.last_name,
+                value: user._id
             }))
         },
         fields_attendees: () => ({
@@ -247,12 +280,15 @@ export default {
                 this.selected_day = this.days[0]
             }
 
+            if (!this.selected_student) {
+                this.selected_student = this.session.attendees[0]._id
+            }
+
             this.logs = await this.$axios.$get('logs/' + this.$route.params.id + '/date/' + this.selected_day)
             this.chart_per_session = await this.$axios.$get('logs/' + this.$route.params.id + '/' + this.selected_day + '/chart_per_session')
             this.chart_per_term = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_per_term')
-            let chart_for_student = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_for_student/' + '597a25b2cf9e820c56f7f72e')
+            this.chart_for_student = await this.$axios.$get('logs/' + this.$route.params.id + '/chart_for_student/' + this.selected_student)
 
-            console.log(chart_for_student)
             this.loading = false
         },
         findLogID(user, sessionID) {

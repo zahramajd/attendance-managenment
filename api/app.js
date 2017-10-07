@@ -584,7 +584,7 @@ app.get('/api/logs/:sessionID/chart_for_student/:userID', async (req, res) => {
   }
 
   res.json({
-    num_of_presence: logs_of_student.length,
-    num_of_total: daysOfSession.length
+    present: logs_of_student.length,
+    total: daysOfSession.length
   })
 })
