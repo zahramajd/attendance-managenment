@@ -78,6 +78,7 @@ const Log = mongoose.model('Log', {
 
 const Audit = mongoose.model('Audit', {
   devID: String,
+  ip: String,
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'

@@ -204,10 +204,15 @@ app.post('/api/otp/verify', async (req, res) => {
     devID
   } = req.body;
 
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.headers['x-real-ip']
+
   console.log('in verify', req.user.username, otp)
 
   let audits = await Audit.find({
-    devID: devID,
+    $or: {
+      devID: devID,
+      ip: ip
+    }
   })
 
   if (audits.length !== 0) {
@@ -286,7 +291,8 @@ app.post('/api/otp/verify', async (req, res) => {
 
     var audit = new Audit({
       devID: devID,
-      user: userID
+      user: userID,
+      ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
     })
 
     await audit.save()
