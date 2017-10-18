@@ -1,7 +1,7 @@
 export default {
   state: () => ({
     user: {
-      roles: []
+      role: []
     }
   }),
   getters: {
