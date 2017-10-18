@@ -598,12 +598,7 @@ app.get('/api/logs/:sessionID/chart_for_student/:userID', async (req, res) => {
 // -----------------------------------------
 app.get('/api/user/session-of', async (req, res) => {
 
-  // let q = {}
-  // if (req.user.role.indexOf('admin') === -1) {
-  //   q._id = { $in: req.user.managerOf }
-  // }
 
-  console.log('in server')
   let user = await User.findOne({
     username: req.user.username
   })
@@ -611,8 +606,6 @@ app.get('/api/user/session-of', async (req, res) => {
   let sessions = await Session.find({
     attendees: user._id
   })
-
-  console.log('session: ', sessions)
 
   res.json({
     sessions
