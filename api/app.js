@@ -593,3 +593,29 @@ app.get('/api/logs/:sessionID/chart_for_student/:userID', async (req, res) => {
     total: daysOfSession.length
   })
 })
+// ----------------------------------------
+// /api/session-of/ : get sessions of student
+// -----------------------------------------
+app.get('/api/user/session-of', async (req, res) => {
+
+  // let q = {}
+  // if (req.user.role.indexOf('admin') === -1) {
+  //   q._id = { $in: req.user.managerOf }
+  // }
+
+  console.log('in server')
+  let user = await User.findOne({
+    username: req.user.username
+  })
+
+  let sessions = await Session.find({
+    attendees: user._id
+  })
+
+  console.log('session: ', sessions)
+
+  res.json({
+    sessions
+  })
+
+})
