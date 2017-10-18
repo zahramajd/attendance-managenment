@@ -1,45 +1,42 @@
 <template>
-  <section class="container">
-    <div>
-      <h3> The current QR code is </h3>
-      <br>
-      <img :src="qrImageSrc">
-      <br> {{ token }}
-    </div>
-  </section>
+  <div class="container">
+    <h2 v-html="title" />
+    <qr class="qr" :secret="secret" />
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import qr from '~/components/qr'
 
 export default {
   layout: 'monitor',
-  data() {
-    return {
-      qr: 'taban',
-    }
-  },
-  mounted() {
-    setInterval(() => this.$store.commit('otp/UPDATE'), 1000)
+  components: {
+    qr
   },
   computed: {
-    ...mapState({
-      token: state => state.otp.token
-    }),
-    qrImageSrc() {
-      // Naa :)) ya code ro pak kardi ya yeja hast
-      return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.token}&bgcolor=E9E8E9`
+    title() {
+      return decodeURIComponent(this.$route.query.title || 'کد زیر را اسکن کنید ')
     },
+    secret() {
+      return this.$route.query.secret || 'GFGWOU2LKJFUQ6SOJNSGU3CTJYYWWTBW'
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  margin: 20px;
+  overflow: hidden;
+}
+
+.qr {
+  width: 60vh;
 }
 </style>

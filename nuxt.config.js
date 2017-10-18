@@ -6,7 +6,8 @@ module.exports = {
     name: 'pulse'
   },
   manifest: {
-    name: 'Attendee'
+    name: 'Attendee',
+    theme_color: '#007bff'
   },
   loading: {
     color: '#3B8070'
@@ -20,7 +21,7 @@ module.exports = {
     '@nuxtjs/bootstrap-vue',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
-    '@nuxtjs/meta',
+    '@nuxtjs/pwa',
   ],
   proxy: [
     'http://localhost:4000/api'

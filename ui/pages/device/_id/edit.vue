@@ -1,7 +1,6 @@
 <template>
     <div>
         <br>
-
         <b-card :title="device.name" :sub-title="device.secret">
             <div class="row">
                 <div class="col-3">
@@ -13,7 +12,6 @@
             </div>
         </b-card>
         <b-btn @click="newSecret">create new secret</b-btn>
-
     </div>
 </template>
 

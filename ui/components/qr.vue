@@ -2,7 +2,7 @@
     <div class="container">
         <span v-html="qrImageSVG"></span>
         <!-- <br> {{ token }}
-            <br> {{ qrData }} -->
+                        <br> {{ qrData }} -->
     </div>
 </template>
 
@@ -43,19 +43,15 @@ export default {
         }
     },
     async mounted() {
-        const ip = await this.$axios.$get('ip')
-        this.endpoint = 'http://' + ip + ':3000'
         this.interval = setInterval(() => {
             this.token = totpToken(this.secret, { step: 30, crypto })
+            console.log('token', this.token)
         }, 1000)
-        console.log('token', this.token)
-
     },
     destroy() {
         clearInterval(this.interval)
     },
     computed: {
-
         qrData() {
             return this.token
         },

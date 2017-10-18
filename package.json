@@ -35,7 +35,7 @@
     "vue-chartjs": "^2.8.7"
   },
   "scripts": {
-    "dev": "HOST=0.0.0.0 nuxt",
+    "dev": "HOST=0.0.0.0 nuxt dev",
     "build": "nuxt build",
     "start": "HOST=0.0.0.0 nuxt start",
     "generate": "nuxt generate",
