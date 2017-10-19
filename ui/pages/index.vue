@@ -5,18 +5,18 @@
             <br>
             <b-card-group deck class="mb-3">
                 <b-card bg-variant="primary" text-variant="white" header="کاربران" class="text-center">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p class="card-text">مشاهده و ویرایش اطلاعات کاربران</p>
                 </b-card>
                 <b-card bg-variant="danger" text-variant="white" header="دروس" class="text-center">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p class="card-text">مشاهده و ویرایش اطلاعات درس‌ها</p>
                 </b-card>
             </b-card-group>
             <b-card-group deck class="mb-3">
                 <b-card bg-variant="success" text-variant="white" header="دستگاه ها" class="text-center">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p class="card-text">مشاهده و ویرایش اطلاعات دستگاه‌ها</p>
                 </b-card>
                 <b-card bg-variant="warning" text-variant="white" header="گزارش ها" class="text-center">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p class="card-text">مشاهده گزارش ها</p>
                 </b-card>
             </b-card-group>
 
