@@ -6,22 +6,24 @@
 </template>
 
 <script>
-import qr from '~/components/qr'
+import qr from "~/components/qr";
 
 export default {
-  layout: 'monitor',
+  layout: "monitor",
   components: {
     qr
   },
   computed: {
     title() {
-      return decodeURIComponent(this.$route.query.title || 'کد زیر را اسکن کنید ')
+      return decodeURIComponent(
+        this.$route.query.title || "کد زیر را اسکن کنید "
+      );
     },
     secret() {
-      return this.$route.query.secret || 'GFGWOU2LKJFUQ6SOJNSGU3CTJYYWWTBW'
+      return this.$route.query.secret || "r";
     }
   }
-}
+};
 </script>
 
 <style scoped>

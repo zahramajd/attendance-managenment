@@ -1,9 +1,9 @@
 <template>
-  <div id="app" dir="ltr">
+  <div id="app" dir="rtl">
     <b-navbar toggleable variant="primary" type="dark">
       <b-nav-toggle target="nav_collapse"></b-nav-toggle>
-      <b-link class="navbar-brand" to="#">
-        <span>Atendee</span>
+      <b-link class="navbar-brand" to="/">
+        <span>سیستم حضور و غیاب</span>
       </b-link>
 
       <b-collapse is-nav id="nav_collapse">
@@ -15,7 +15,7 @@
           <b-nav-item to="/logs" v-if="$store.getters.accessLogs">گزارش‌ها</b-nav-item>
         </b-nav>
 
-        <b-nav is-nav-bar class="ml-auto">
+        <b-nav is-nav-bar class="mr-auto">
           <b-nav-item-dropdown right v-if="$store.state.user">
             <!-- Using button-content slot -->
             <template slot="button-content">
@@ -38,12 +38,13 @@
 export default {
   methods: {
     logout() {
-      document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-      this.$router.push('/login')
-      this.$store.commit('SET_USER', null)
+      document.cookie =
+        "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      this.$router.push("/login");
+      this.$store.commit("SET_USER", null);
     }
   }
-}
+};
 </script>
 
 <style>

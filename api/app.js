@@ -208,10 +208,10 @@ app.post('/api/otp/verify', async (req, res) => {
   console.log('in verify', req.user.username, otp)
 
   let audits = await Audit.find({
-    $or: {
-      devID: devID,
-      ip: ip
-    }
+    $or: [
+      { devID: devID },
+      { ip: ip }
+    ]
   })
 
   if (audits.length !== 0) {
@@ -305,7 +305,7 @@ app.post('/api/otp/verify', async (req, res) => {
 // /api/logs : List all logs
 // --------------------------------
 app.get('/api/logs', async (req, res) => {
-  let logs = await Log.find({})
+  let logs = await Log.find({}).sort({ 'timestamps.createdAt': -1 })
   res.json(logs)
 })
 

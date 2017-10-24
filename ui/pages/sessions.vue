@@ -5,7 +5,7 @@
                 {{item.name}}
             </template>
             <template slot="actions" scope="item">
-                <b-button-group>
+                <b-button-group dir=ltr>
                     <b-btn size="sm" :to="'/session/' +  item.item._id + '/view'" v-if="$store.getters.viewSessions">مشاهده</b-btn>
                     <b-btn size="sm" :to="'/session/' +  item.item._id + '/edit'" v-if="$store.getters.editSessions">تغییر</b-btn>
                 </b-button-group>
@@ -25,45 +25,42 @@
 
 <script>
 export default {
-    middleware: 'auth',
-    data() {
-        return {
-            name: '',
-            sessions: [],
-            fields: {
-                name: {
-                    label: 'نام درس',
-                },
-                actions: {
-                    label: 'عملیات'
-                }
-            },
-            no_input_alert: false,
-            showWarn: false
+  middleware: "auth",
+  data() {
+    return {
+      name: "",
+      sessions: [],
+      fields: {
+        name: {
+          label: "نام درس"
+        },
+        actions: {
+          label: "عملیات"
         }
+      },
+      no_input_alert: false,
+      showWarn: false
+    };
+  },
+  async mounted() {
+    await this.getSessions();
+  },
+  methods: {
+    async getSessions() {
+      //  this.sessions = (await this.$axios.get('sessions')).data
+      this.sessions = (await this.$axios.$get("user/manager-of")).sessions;
     },
-    async mounted() {
-        await this.getSessions()
-    },
-    methods: {
-        async getSessions() {
-            //  this.sessions = (await this.$axios.get('sessions')).data
-            this.sessions = (await this.$axios.$get('user/manager-of')).sessions
-        },
-        async newSession() {
-            this.showWarn = false
-            if (this.name == '')
-                this.no_input_alert = true
-            else {
-                const res = await this.$axios.post('sessions/new', {
-                    name: this.name,
-                })
-                await this.getSessions()
-                if (res.data.result == false)
-                    this.showWarn = true
-            }
-
-        },
+    async newSession() {
+      this.showWarn = false;
+      if (this.name == "") this.no_input_alert = true;
+      else {
+        const res = await this.$axios.post("sessions/new", {
+          name: this.name
+        });
+        await this.getSessions();
+        if (res.data.result == false) this.showWarn = true;
+      }
     }
-}
+  }
+};
 </script>

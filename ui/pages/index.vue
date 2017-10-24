@@ -42,7 +42,6 @@ export default {
             await this.$axios.post('new_dev', {
                 name: this.device_name
             })
-            //   await this.getPets()
         },
         async newUser() {
             await this.$axios.post('new_user', {
